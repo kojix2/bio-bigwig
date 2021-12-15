@@ -11,12 +11,12 @@ module BigWig
     attr_accessor :ffi_lib
   end
 
-  lib_name = ::FFI.map_library_name("libbigwig")
+  lib_name = ::FFI.map_library_name("libBigWig")
   self.ffi_lib = if ENV["LIBBIGWIGDIR"]
                    File.expand_path(lib_name, ENV["LIBBIGWIGDIR"])
                  else
                    File.expand_path("../vendor/#{lib_name}", __dir__)
                  end
 
-  autoload :BigWig, "bigwig/ffi"
+  autoload :FFI, "bigwig/ffi"
 end

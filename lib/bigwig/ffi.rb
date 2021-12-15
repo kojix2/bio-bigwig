@@ -2,7 +2,7 @@ require_relative "ffi/constants"
 
 module BigWig
   module FFI
-    extend FFI::Library
+    extend ::FFI::Library
 
     begin
       ffi_lib BigWig.ffi_lib
@@ -18,3 +18,6 @@ module BigWig
     end
   end
 end
+
+require_relative "ffi/constants"
+require_relative "ffi/functions"
