@@ -2,12 +2,8 @@
 
 require "test_helper"
 
-class BigwigTest < Minitest::Test
+class BigWigTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Bigwig::VERSION
-  end
-
-  def test_it_does_something_useful
-    assert false
+    refute_nil ::BigWig::VERSION
   end
 end
