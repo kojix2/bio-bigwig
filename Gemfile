@@ -6,5 +6,3 @@ gemspec
 
 gem "minitest"
 gem "rake"
-gem "rubocop"
-gem "tty-command"

@@ -6,4 +6,9 @@
 /pkg/
 /spec/reports/
 /tmp/
+
 *.lock
+
+*.so
+*.dylib
+*.dll
