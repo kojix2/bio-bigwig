@@ -1,4 +1,4 @@
-# bw-runby
+# ruby-bigwig
 
 Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig).
 
