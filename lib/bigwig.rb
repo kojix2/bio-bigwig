@@ -19,4 +19,11 @@ module BigWig
                  end
 
   autoload :FFI, "bigwig/ffi"
+
+  BIGWIG_MAGIC      = 0x888FFC26
+  BIGBED_MAGIC      = 0x8789F2EB
+  CIRTREE_MAGIC     = 0x78ca8c91
+  IDX_MAGIC         = 0x2468ace0
+  DEFAULT_nCHILDREN = 64
+  DEFAULT_BLOCKSIZE = 32768
 end
