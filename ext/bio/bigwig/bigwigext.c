@@ -58,6 +58,14 @@ static const rb_data_type_t BigWig_type = {
     0,
     RUBY_TYPED_FREE_IMMEDIATELY};
 
+static void
+BigWig_free(void *ptr)
+{
+    if (ptr) {
+        bwClose((bigWigFile_t *)ptr);
+    }
+}
+
 static size_t BigWig_memsize(const void *ptr)
 {
   const bigWigFile_t *data = ptr;
