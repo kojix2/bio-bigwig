@@ -1,14 +1,14 @@
-# ruby-bigwig
+# bio-bigwig
 
 Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig).
 
 ## Installation
 
 ```
-git clone --recursive https://github.com/kojix2/bw-ruby
+git clone --recursive https://github.com/kojix2/bio-bigwig
 cd bw-ruby
 bundle install
-bundle exec rake libbigwig:build
+bundle exec rake compile
 bundle exec rake install
 ```
 
