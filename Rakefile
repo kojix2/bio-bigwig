@@ -11,4 +11,13 @@ end
 
 task default: :test
 
-load "ext/Rakefile"
+require "rake/extensiontask"
+
+task build: :compile
+
+Rake::ExtensionTask.new("bigwigext") do |ext|
+  ext.ext_dir = "ext/bio/bigwig"
+  ext.lib_dir = "lib/bio/bigwig"
+end
+
+task default: %i[clobber compile test]

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/bigwig/version"
+require_relative "lib/bio/bigwig/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bigwig"
-  spec.version       = BigWig::VERSION
+  spec.version       = Bio::BigWig::VERSION
   spec.authors       = ["kojix2"]
   spec.email         = ["2xijok@gmail.com"]
 
@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["*.{md,txt}", "{lib,ext}/**/*", "vendor/libBigWig.{so,dylib}"]
   spec.require_paths = ["lib"]
 
-  spec.extensions    = %w[ext/Rakefile]
+  spec.extensions    = %w[ext/bio/bigwig/extconf.rb]
 
   spec.add_dependency "ffi"
 end

@@ -1,3 +1,0 @@
-[submodule "libBigWig"]
-	path = ext/libBigWig
-	url = https://github.com/dpryan79/libBigWig
