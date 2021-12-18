@@ -14,13 +14,11 @@ bundle exec rake install
 
 ## Usage
 
-TODO: Write usage instructions here
-
 ## Development
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/kojix2/bigwig.
+Bug reports and pull requests are welcome on GitHub at https://github.com/kojix2/bio-bigwig.
 
 ## License
 
