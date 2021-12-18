@@ -11,6 +11,12 @@ jobs:
         ruby: [ '2.7', '3.0' ]
     steps:
       - uses: actions/checkout@v2
+      - name: Checkout submodule
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git submodule update --init --force --recursive
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
