@@ -1,8 +1,14 @@
 # bio-bigwig
 
-Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig).
+Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig) / [pyBigWig](https://github.com/deeptools/pyBigWig).
 
 ## Installation
+
+```
+gem install bio-bigwig
+```
+
+Installation from source.
 
 ```
 git clone --recursive https://github.com/kojix2/bio-bigwig
