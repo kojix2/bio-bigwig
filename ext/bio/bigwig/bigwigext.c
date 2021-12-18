@@ -171,21 +171,14 @@ bw_get_header(VALUE self)
 
   rb_header = rb_hash_new();
 
-  // FIXME naming: camel -> snake ?
-  if (rb_hash_aset(rb_header, rb_str_new2("version"), ULONG2NUM(bw->hdr->version)) == -1)
-    goto error;
-  if (rrb_hash_aset(rb_header, rb_str_new2("nLevels"), ULONG2NUM(bw->hdr->nLevels)) == -1)
-    goto error;
-  if (rrb_hash_aset(rb_header, rb_str_new2("nBasesCovered"), ULL2NUM(bw->hdr->nBasesCovered)) == -1)
-    goto error;
-  if (rrb_hash_aset(rb_header, rb_str_new2("minVal"), DBL2NUM(bw->hdr->minVal)) == -1)
-    goto error;
-  if (rrb_hash_aset(rb_header, rb_str_new2("maxVal"), DBL2NUM(bw->hdr->maxVal)) == -1)
-    goto error;
-  if (rrb_hash_aset(rb_header, rb_str_new2("sumData"), DBL2NUM(bw->hdr->sumData)) == -1)
-    goto error;
-  if (rb_hash_aset(rb_header, rb_str_new2("sumSquared"), DBL2NUM(bw->hdr->sumSquared)) == -1)
-    goto error;
+  // FIXME return int or double?
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("version")), ULONG2NUM(bw->hdr->version));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("levels")), ULONG2NUM(bw->hdr->nLevels));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("bases_covered")), ULL2NUM(bw->hdr->nBasesCovered));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("min_val")), INT2NUM((int) bw->hdr->minVal));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("max_val")), INT2NUM((int) bw->hdr->maxVal));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_data")), INT2NUM((int) bw->hdr->sumData));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_squared")), INT2NUM((int) bw->hdr->sumSquared));
 
   return rb_header;
 
@@ -202,4 +195,6 @@ void Init_bigwigext()
   rb_define_alloc_func(rb_BigWig, bigwig_allocate);
 
   rb_define_private_method(rb_BigWig, "initialize_raw", bigwig_init, 2);
+  rb_define_method(rb_BigWig, "close", bigwig_close, 0);
+  rb_define_method(rb_BigWig, "header", bw_get_header, 0);
 }
