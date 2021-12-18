@@ -4,7 +4,7 @@ require_relative "bigwig/version"
 require_relative "bigwig/bigwigext"
 
 module Bio
-  module BigWig
+  class BigWig
     BIGWIG_MAGIC      = 0x888FFC26
     BIGBED_MAGIC      = 0x8789F2EB
     CIRTREE_MAGIC     = 0x78ca8c91
