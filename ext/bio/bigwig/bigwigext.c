@@ -61,9 +61,10 @@ static const rb_data_type_t BigWig_type = {
 static void
 BigWig_free(void *ptr)
 {
-    if (ptr) {
-        bwClose((bigWigFile_t *)ptr);
-    }
+  if (ptr)
+  {
+    bwClose((bigWigFile_t *)ptr);
+  }
 }
 
 static size_t BigWig_memsize(const void *ptr)
@@ -133,6 +134,63 @@ error:
   if (bw)
     bwClose(bw);
   rb_raise(rb_eRuntimeError, "Received an error during file opening!");
+  return Qnil;
+}
+
+static VALUE
+bigwig_close(VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+
+  if (bw)
+  {
+    bwClose(bw);
+    DATA_PTR(self) = NULL;
+  }
+
+  return Qnil;
+}
+
+static VALUE
+bw_get_header(VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  VALUE rb_header;
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->isWrite == 1)
+  {
+    rb_raise(rb_eRuntimeError, "The header cannot be accessed in files opened for writing!");
+    return Qnil;
+  }
+
+  rb_header = rb_hash_new();
+
+  // FIXME naming: camel -> snake ?
+  if (rb_hash_aset(rb_header, rb_str_new2("version"), ULONG2NUM(bw->hdr->version)) == -1)
+    goto error;
+  if (rrb_hash_aset(rb_header, rb_str_new2("nLevels"), ULONG2NUM(bw->hdr->nLevels)) == -1)
+    goto error;
+  if (rrb_hash_aset(rb_header, rb_str_new2("nBasesCovered"), ULL2NUM(bw->hdr->nBasesCovered)) == -1)
+    goto error;
+  if (rrb_hash_aset(rb_header, rb_str_new2("minVal"), DBL2NUM(bw->hdr->minVal)) == -1)
+    goto error;
+  if (rrb_hash_aset(rb_header, rb_str_new2("maxVal"), DBL2NUM(bw->hdr->maxVal)) == -1)
+    goto error;
+  if (rrb_hash_aset(rb_header, rb_str_new2("sumData"), DBL2NUM(bw->hdr->sumData)) == -1)
+    goto error;
+  if (rb_hash_aset(rb_header, rb_str_new2("sumSquared"), DBL2NUM(bw->hdr->sumSquared)) == -1)
+    goto error;
+
+  return rb_header;
+
+error:
+  rb_raise(rb_eRuntimeError, "Received an error while getting the bigWig header!");
   return Qnil;
 }
 
