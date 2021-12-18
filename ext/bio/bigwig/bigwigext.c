@@ -236,6 +236,18 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
   return ret;
 }
 
+enum bwStatsType char2enum(char *s) {
+    if(strcmp(s, "mean") == 0) return mean;
+    if(strcmp(s, "std") == 0) return stdev;
+    if(strcmp(s, "dev") == 0) return dev;
+    if(strcmp(s, "max") == 0) return max;
+    if(strcmp(s, "min") == 0) return min;
+    if(strcmp(s, "cov") == 0) return cov;
+    if(strcmp(s, "coverage") == 0) return cov;
+    if(strcmp(s, "sum") == 0) return sum;
+    return -1;
+};
+
 void Init_bigwigext()
 {
   rb_Bio = rb_define_module("Bio");
