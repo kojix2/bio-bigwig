@@ -175,10 +175,10 @@ bw_get_header(VALUE self)
   rb_hash_aset(rb_header, ID2SYM(rb_intern("version")), ULONG2NUM(bw->hdr->version));
   rb_hash_aset(rb_header, ID2SYM(rb_intern("levels")), ULONG2NUM(bw->hdr->nLevels));
   rb_hash_aset(rb_header, ID2SYM(rb_intern("bases_covered")), ULL2NUM(bw->hdr->nBasesCovered));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern("min_val")), INT2NUM((int) bw->hdr->minVal));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern("max_val")), INT2NUM((int) bw->hdr->maxVal));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_data")), INT2NUM((int) bw->hdr->sumData));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_squared")), INT2NUM((int) bw->hdr->sumSquared));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("min_val")), INT2NUM((int)bw->hdr->minVal));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("max_val")), INT2NUM((int)bw->hdr->maxVal));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_data")), INT2NUM((int)bw->hdr->sumData));
+  rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_squared")), INT2NUM((int)bw->hdr->sumSquared));
 
   return rb_header;
 
