@@ -10,6 +10,7 @@
 
 *.lock
 
+*.o
 *.so
 *.dylib
 *.dll

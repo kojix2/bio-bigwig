@@ -33,4 +33,13 @@ class BigWigTest < Minitest::Test
     )
     bw.close
   end
+
+  def test_chroms
+    bw = Bio::BigWig.new(fname)
+    assert_equal({ "1" => 195_471_971, "10" => 130_694_993 }, bw.chroms)
+    assert_equal(195_471_971, bw.chroms("1"))
+    assert_equal(130_694_993, bw.chroms("10"))
+    assert_nil bw.chroms("11")
+    bw.close
+  end
 end

@@ -93,7 +93,7 @@ static VALUE
 bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
 {
   char *fname;
-  char *mode = "r";
+  char *mode;
   bigWigFile_t *bw = NULL;
 
   fname = StringValueCStr(rb_fname);
@@ -187,6 +187,55 @@ error:
   return Qnil;
 }
 
+static VALUE
+bw_get_chroms(int argc, VALUE *argv, VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  VALUE rb_chrom, val, ret;
+  char *chrom = NULL;
+  uint32_t i;
+
+  ret = Qnil; // return nil if no chrom is found
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->isWrite == 1)
+  {
+    rb_raise(rb_eRuntimeError, "Chromosomes cannot be accessed in files opened for writing!");
+    return Qnil;
+  }
+
+  rb_scan_args(argc, argv, "01", &rb_chrom);
+
+  if (argc == 0)
+  {
+    ret = rb_hash_new();
+    for (i = 0; i < bw->cl->nKeys; i++)
+    {
+      val = ULONG2NUM(bw->cl->len[i]);
+      rb_hash_aset(ret, rb_str_new2(bw->cl->chrom[i]), val);
+    }
+  }
+  else
+  {
+    chrom = StringValueCStr(rb_chrom);
+    for (i = 0; i < bw->cl->nKeys; i++)
+    {
+      if (strcmp(bw->cl->chrom[i], chrom) == 0)
+      {
+        ret = ULONG2NUM(bw->cl->len[i]);
+        break;
+      }
+    }
+  }
+
+  return ret;
+}
+
 void Init_bigwigext()
 {
   rb_Bio = rb_define_module("Bio");
@@ -197,4 +246,5 @@ void Init_bigwigext()
   rb_define_private_method(rb_BigWig, "initialize_raw", bigwig_init, 2);
   rb_define_method(rb_BigWig, "close", bigwig_close, 0);
   rb_define_method(rb_BigWig, "header", bw_get_header, 0);
+  rb_define_method(rb_BigWig, "chroms", bw_get_chroms, -1);
 }
