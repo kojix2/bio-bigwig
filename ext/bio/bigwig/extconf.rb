@@ -1,11 +1,10 @@
 require "mkmf"
 
-globs = [".", "libBigWig"].map do |directory|
-  File.join(File.dirname(__FILE__), directory)
-end.join(",")
+$objs = Dir.glob(["{.,libBigWig}/*.c"], base: __dir__)
+           .map { |f| File.expand_path(f, __dir__) }
+           .map { |f| f.sub(/\.c$/, ".o") }
 
-$objs = Dir.glob("{#{globs}}/*.c").map do |file|
-  File.join(File.dirname(file), "#{File.basename(file, ".c")}.o")
-end
+# $INCFLAGS << " -I$(srcdir)/libBigWig"
+# $VPATH    << "$(srcdir)/libBigWig"
 
 create_makefile("bio/bigwig/bigwigext")
