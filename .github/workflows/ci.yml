@@ -17,6 +17,10 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git submodule update --init --force --recursive
+      - name: Install libcurl4 (ubuntu)
+        if: ${{ matrix.os == 'ubuntu' }}
+        run: |
+          sudo apt install libcurl4-openssl-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
