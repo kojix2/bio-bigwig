@@ -7,18 +7,26 @@ class BigWigTest < Minitest::Test
     refute_nil Bio::BigWig::VERSION
   end
 
-  def fname
+  def bwfile
     File.expand_path("fixtures/test.bw", __dir__)
   end
 
+  def bwurl
+    "http://raw.githubusercontent.com/dpryan79/pyBigWig/master/pyBigWigTest/test.bw"
+  end
+
+  def bedfile
+    File.expand_path("fixtures/test.bigBed", __dir__)
+  end
+
   def test_open
-    bw = Bio::BigWig.new(fname)
+    bw = Bio::BigWig.new(bwfile)
     assert_equal Bio::BigWig, bw.class
     bw.close
   end
 
   def test_header
-    bw = Bio::BigWig.new(fname)
+    bw = Bio::BigWig.new(bwfile)
     assert_equal(
       {
         version: 4,
@@ -34,12 +42,23 @@ class BigWigTest < Minitest::Test
     bw.close
   end
 
-  def test_chroms
-    bw = Bio::BigWig.new(fname)
-    assert_equal({ "1" => 195_471_971, "10" => 130_694_993 }, bw.chroms)
-    assert_equal(195_471_971, bw.chroms("1"))
-    assert_equal(130_694_993, bw.chroms("10"))
-    assert_nil bw.chroms("11")
-    bw.close
+  %i[bwfile bwurl].each do |fname|
+    define_method("test_chroms_#{fname}") do
+      bw = Bio::BigWig.new(public_send(fname))
+      assert_equal({ "1" => 195_471_971, "10" => 130_694_993 }, bw.chroms)
+      assert_equal(195_471_971, bw.chroms("1"))
+      assert_equal(130_694_993, bw.chroms("10"))
+      assert_nil bw.chroms("11")
+      bw.close
+    end
+
+    define_method("test_stats_#{fname}") do
+      bw = Bio::BigWig.new(public_send(fname))
+      assert_equal([0.2000000054637591], bw.stats("1", 0, 3, nil, nil, nil))
+      assert_equal([0.30000001192092896], bw.stats("1", 0, 3, nil, "max", nil))
+      assert_equal([1.399999976158142, 1.5], bw.stats("1", 99, 200, 2, "max", nil))
+      assert_equal([1.3351851569281683], bw.stats("1", nil, nil, nil, nil, nil))
+      bw.close
+    end
   end
 end

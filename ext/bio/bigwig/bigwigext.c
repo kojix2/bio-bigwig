@@ -89,6 +89,13 @@ bigwig_allocate(VALUE klass)
   return TypedData_Wrap_Struct(klass, &BigWig_type, bw);
 }
 
+//Return 1 if there are any entries at all
+int hasEntries(bigWigFile_t *bw) {
+    if(bw->hdr->indexOffset != 0) return 1;  // No index, no entries pyBigWig issue #111
+    //if(bw->hdr->nBasesCovered > 0) return 1;  // Sometimes headers are broken
+    return 0;
+}
+
 static VALUE
 bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
 {
@@ -236,17 +243,146 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
   return ret;
 }
 
-enum bwStatsType char2enum(char *s) {
-    if(strcmp(s, "mean") == 0) return mean;
-    if(strcmp(s, "std") == 0) return stdev;
-    if(strcmp(s, "dev") == 0) return dev;
-    if(strcmp(s, "max") == 0) return max;
-    if(strcmp(s, "min") == 0) return min;
-    if(strcmp(s, "cov") == 0) return cov;
-    if(strcmp(s, "coverage") == 0) return cov;
-    if(strcmp(s, "sum") == 0) return sum;
-    return -1;
+enum bwStatsType char2enum(char *s)
+{
+  if (strcmp(s, "mean") == 0)
+    return mean;
+  if (strcmp(s, "std") == 0)
+    return stdev;
+  if (strcmp(s, "dev") == 0)
+    return dev;
+  if (strcmp(s, "max") == 0)
+    return max;
+  if (strcmp(s, "min") == 0)
+    return min;
+  if (strcmp(s, "cov") == 0)
+    return cov;
+  if (strcmp(s, "coverage") == 0)
+    return cov;
+  if (strcmp(s, "sum") == 0)
+    return sum;
+  return -1;
 };
+
+// double *bwStats        (bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end, uint32_t nBins, enum bwStatsType type);
+// double *bwStatsFromFull(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end, uint32_t nBins, enum bwStatsType type);
+
+static VALUE
+bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_nBins, VALUE rb_type, VALUE rb_exact)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  double *val;
+  unsigned long startl = 0, endl = -1;
+  uint32_t start, end = -1, tid;
+  int nBins = 1, i;
+  char *chrom = NULL, *type = "mean";
+  VALUE ret;
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->isWrite == 1)
+  {
+    rb_raise(rb_eRuntimeError, "Statistics cannot be accessed in files opened for writing!");
+    return Qnil;
+  }
+
+  if (bw->type == 1)
+  {
+    rb_raise(rb_eRuntimeError, "bigBed files have no statistics!");
+    return Qnil;
+  }
+
+  if (rb_chrom != Qnil)
+  {
+    chrom = StringValueCStr(rb_chrom);
+  }
+
+  if (rb_start != Qnil)
+    startl = NUM2LONG(rb_start);
+
+  if (rb_end != Qnil)
+    endl = NUM2LONG(rb_end);
+
+  if (rb_nBins != Qnil)
+    nBins = NUM2INT(rb_nBins);
+
+  if (rb_type != Qnil)
+    type = StringValueCStr(rb_type);
+
+  if (rb_exact != Qnil)
+  {
+    if (NUM2INT(rb_exact) == 1)
+      endl = startl + nBins - 1;
+  }
+
+  tid = bwGetTid(bw, chrom);
+
+  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
+    endl = bw->cl->len[tid];
+
+  if (tid == (uint32_t)-1 || startl > end || endl > end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  start = (uint32_t)startl;
+  end = (uint32_t)endl;
+
+  if (end <= start || end > bw->cl->len[tid] || start >= end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  if (char2enum(type) == doesNotExist)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid type!");
+    return Qnil;
+  }
+
+  if (!hasEntries(bw))
+  {
+    ret = rb_ary_new2(nBins);
+    for (i = 0; i < nBins; i++)
+    {
+      rb_ary_store(ret, i, Qnil);
+    }
+    return ret;
+  }
+
+  if(RTEST(rb_exact))
+  {
+    val = bwStatsFromFull(bw, chrom, start, end, nBins, char2enum(type));
+  }
+  else
+  {
+    val = bwStats(bw, chrom, start, end, nBins, char2enum(type));
+  }
+
+  if(!val)
+  {
+    rb_raise(rb_eRuntimeError, "Error getting statistics!An error was encountered while fetching statistics.");
+    return Qnil;
+  }
+
+  ret = rb_ary_new2(nBins);
+  for (i = 0; i < nBins; i++)
+  {
+    if(isnan(val[i])) {
+      rb_ary_store(ret, i, Qnil);
+    } else {
+      rb_ary_store(ret, i, rb_float_new(val[i]));
+    }
+  }
+  free(val);
+
+  return ret;
+}
 
 void Init_bigwigext()
 {
@@ -259,4 +395,5 @@ void Init_bigwigext()
   rb_define_method(rb_BigWig, "close", bigwig_close, 0);
   rb_define_method(rb_BigWig, "header", bw_get_header, 0);
   rb_define_method(rb_BigWig, "chroms", bw_get_chroms, -1);
+  rb_define_method(rb_BigWig, "stats", bw_get_stats, 6);
 }
