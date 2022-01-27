@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "mkmf"
 
 # https://github.com/taf2/curb/blob/master/ext/extconf.rb
@@ -10,7 +12,7 @@ if find_executable("curl-config")
              " #{`curl-config --libs`.strip}"
            end
   ca_bundle_path = `curl-config --ca`.strip
-  if !ca_bundle_path.nil? and ca_bundle_path != ""
+  if !ca_bundle_path.nil? && (ca_bundle_path != "")
     $defs.push(%(-D HAVE_CURL_CONFIG_CA))
     $defs.push(%(-D CURL_CONFIG_CA='#{ca_bundle_path.inspect}'))
   end
@@ -20,7 +22,6 @@ $objs = Dir.glob(["{.,libBigWig}/*.c"], base: __dir__)
            .map { |f| File.expand_path(f, __dir__) }
            .map { |f| f.sub(/\.c$/, ".o") }
 
-$CFLAGS
 # $INCFLAGS << " -I$(srcdir)/libBigWig"
 # $VPATH    << "$(srcdir)/libBigWig"
 

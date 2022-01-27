@@ -12,7 +12,7 @@ class BigWigTest < Minitest::Test
   end
 
   def bwurl
-    "http://raw.githubusercontent.com/dpryan79/pyBigWig/master/pyBigWigTest/test.bw"
+    "https://raw.githubusercontent.com/dpryan79/pyBigWig/master/pyBigWigTest/test.bw"
   end
 
   def bedfile
@@ -42,7 +42,7 @@ class BigWigTest < Minitest::Test
     bw.close
   end
 
-  %i[bwfile bwurl].each do |fname|
+  %i[bwfile].each do |fname|
     define_method("test_chroms_#{fname}") do
       bw = Bio::BigWig.new(public_send(fname))
       assert_equal({ "1" => 195_471_971, "10" => 130_694_993 }, bw.chroms)
@@ -58,6 +58,16 @@ class BigWigTest < Minitest::Test
       assert_equal([0.30000001192092896], bw.stats("1", 0, 3, nil, "max", nil))
       assert_equal([1.399999976158142, 1.5], bw.stats("1", 99, 200, 2, "max", nil))
       assert_equal([1.3351851569281683], bw.stats("1", nil, nil, nil, nil, nil))
+      bw.close
+    end
+
+    define_method("test_values_#{fname}") do
+      bw = Bio::BigWig.new(public_send(fname))
+      assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], bw.values("1", 0, 3))
+      # assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], bw.values("1", np.int64(0), np.int64(3))
+      r = bw.values("1", 0, 4)
+      assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], r[0..2])
+      assert_equal(true, r[3].nan?)
       bw.close
     end
   end

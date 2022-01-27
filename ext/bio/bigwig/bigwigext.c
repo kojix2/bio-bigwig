@@ -90,10 +90,12 @@ bigwig_allocate(VALUE klass)
 }
 
 //Return 1 if there are any entries at all
-int hasEntries(bigWigFile_t *bw) {
-    if(bw->hdr->indexOffset != 0) return 1;  // No index, no entries pyBigWig issue #111
-    //if(bw->hdr->nBasesCovered > 0) return 1;  // Sometimes headers are broken
-    return 0;
+int hasEntries(bigWigFile_t *bw)
+{
+  if (bw->hdr->indexOffset != 0)
+    return 1; // No index, no entries pyBigWig issue #111
+  //if(bw->hdr->nBasesCovered > 0) return 1;  // Sometimes headers are broken
+  return 0;
 }
 
 static VALUE
@@ -355,7 +357,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
     return ret;
   }
 
-  if(RTEST(rb_exact))
+  if (RTEST(rb_exact))
   {
     val = bwStatsFromFull(bw, chrom, start, end, nBins, char2enum(type));
   }
@@ -364,7 +366,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
     val = bwStats(bw, chrom, start, end, nBins, char2enum(type));
   }
 
-  if(!val)
+  if (!val)
   {
     rb_raise(rb_eRuntimeError, "Error getting statistics!An error was encountered while fetching statistics.");
     return Qnil;
@@ -373,13 +375,89 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
   ret = rb_ary_new2(nBins);
   for (i = 0; i < nBins; i++)
   {
-    if(isnan(val[i])) {
+    if (isnan(val[i]))
+    {
       rb_ary_store(ret, i, Qnil);
-    } else {
+    }
+    else
+    {
       rb_ary_store(ret, i, rb_float_new(val[i]));
     }
   }
   free(val);
+
+  return ret;
+}
+
+static VALUE
+bw_get_values(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  int i;
+  uint32_t start, end = -1, tid;
+  unsigned long startl = 0, endl = -1;
+  char *chrom = NULL;
+  VALUE ret;
+  bwOverlappingIntervals_t *o;
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->type == 1)
+  {
+    rb_raise(rb_eRuntimeError, "bigBed files have no values! Use 'entries' instead.");
+    return Qnil;
+  }
+
+  if (rb_chrom != Qnil)
+  {
+    chrom = StringValueCStr(rb_chrom);
+  }
+
+  if (rb_start != Qnil)
+    startl = NUM2LONG(rb_start);
+
+  if (rb_end != Qnil)
+    endl = NUM2LONG(rb_end);
+
+  tid = bwGetTid(bw, chrom);
+
+  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
+    endl = bw->cl->len[tid];
+  if (tid == (uint32_t)-1 || startl > end || endl > end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  start = (uint32_t)startl;
+  end = (uint32_t)endl;
+
+  if (end <= start || end > bw->cl->len[tid] || start >= end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  if (!hasEntries(bw))
+  {
+    return rb_ary_new2(0);
+  }
+
+  o = bwGetValues(bw, chrom, start, end, 1);
+  if (!o)
+  {
+    rb_raise(rb_eRuntimeError, "An error occurred while fetching values!");
+    return Qnil;
+  }
+
+  ret = rb_ary_new2(end - start);
+  for (i = 0; i < (int)o->l; i++)
+    rb_ary_store(ret, i, DBL2NUM(o->value[i]));
+  bwDestroyOverlappingIntervals(o);
 
   return ret;
 }
@@ -396,4 +474,5 @@ void Init_bigwigext()
   rb_define_method(rb_BigWig, "header", bw_get_header, 0);
   rb_define_method(rb_BigWig, "chroms", bw_get_chroms, -1);
   rb_define_method(rb_BigWig, "stats", bw_get_stats, 6);
+  rb_define_method(rb_BigWig, "values", bw_get_values, 3);
 }
