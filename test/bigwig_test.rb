@@ -63,11 +63,31 @@ class BigWigTest < Minitest::Test
 
     define_method("test_values_#{fname}") do
       bw = Bio::BigWig.new(public_send(fname))
-      assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], bw.values("1", 0, 3))
+      assert_equal(
+        [0.10000000149011612, 0.20000000298023224, 0.30000001192092896],
+        bw.values("1", 0, 3)
+      )
       # assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], bw.values("1", np.int64(0), np.int64(3))
       r = bw.values("1", 0, 4)
-      assert_equal([0.10000000149011612, 0.20000000298023224, 0.30000001192092896], r[0..2])
+      assert_equal(
+        [0.10000000149011612, 0.20000000298023224, 0.30000001192092896],
+        r[0..2]
+      )
       assert_equal(true, r[3].nan?)
+      bw.close
+    end
+
+    define_method("test_intervals_#{fname}") do
+      bw = Bio::BigWig.new(public_send(fname))
+      assert_equal(
+        [[0, 1, 0.10000000149011612], [1, 2, 0.20000000298023224], [2, 3, 0.30000001192092896]],
+        bw.intervals("1", 0, 3)
+      )
+      assert_equal(
+        [[0, 1, 0.10000000149011612], [1, 2, 0.20000000298023224], [2, 3, 0.30000001192092896],
+         [100, 150, 1.399999976158142], [150, 151, 1.5]],
+        bw.intervals("1")
+      )
       bw.close
     end
   end
