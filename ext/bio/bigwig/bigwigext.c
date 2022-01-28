@@ -550,6 +550,23 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
   return ret;
 }
 
+static VALUE
+bw_get_file_type(VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+
+  if (bw->type == 0)
+  {
+    return rb_str_new2("BigWig");
+  }
+  else if (bw->type == 1)
+  {
+    return rb_str_new2("BigBed");
+  }
+
+  return rb_str_new2("Unknown");
+}
+
 void Init_bigwigext()
 {
   rb_Bio = rb_define_module("Bio");
@@ -564,4 +581,5 @@ void Init_bigwigext()
   rb_define_private_method(rb_BigWig, "stats_raw", bw_get_stats, 6);
   rb_define_private_method(rb_BigWig, "values_raw", bw_get_values, 3);
   rb_define_private_method(rb_BigWig, "intervals_raw", bw_get_intervals, 3);
+  rb_define_method(rb_BigWig, "file_type", bw_get_file_type, 0);
 }

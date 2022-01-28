@@ -11,6 +11,10 @@ class BigWigTest < Minitest::Test
     File.expand_path("fixtures/test.bw", __dir__)
   end
 
+  def bbfile
+    File.expand_path("fixtures/test.bigBed", __dir__)
+  end
+
   def bwurl
     "https://raw.githubusercontent.com/dpryan79/pyBigWig/master/pyBigWigTest/test.bw"
   end
@@ -23,6 +27,15 @@ class BigWigTest < Minitest::Test
     bw = Bio::BigWig.new(bwfile)
     assert_equal Bio::BigWig, bw.class
     bw.close
+  end
+
+  def test_file_type
+    Bio::BigWig.open(bwfile) do |bw|
+      assert_equal "BigWig", bw.file_type
+    end
+    Bio::BigWig.open(bbfile) do |bb|
+      assert_equal "BigBed", bb.file_type
+    end
   end
 
   def test_header
