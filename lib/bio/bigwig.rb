@@ -5,19 +5,23 @@ require_relative "bigwig/bigwigext"
 
 module Bio
   class BigWig
-    class << self
-      alias open new
+    def self.open(*args, **kwargs)
+      file = new(*args, **kwargs)
+      return file unless block_given?
+
+      begin
+        yield file
+      ensure
+        file.close
+      end
+      file
     end
 
     def initialize(fname, rw = "r")
+      raise "BigWig::new() does not take block; use BigWig::open() instead" if block_given?
+
+      @fname = fname
       initialize_raw(fname, rw)
-      if block_given?
-        begin
-          yield self
-        ensure
-          close
-        end
-      end
     end
 
     BIGWIG_MAGIC      = 0x888FFC26
