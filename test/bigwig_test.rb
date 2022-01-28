@@ -54,10 +54,10 @@ class BigWigTest < Minitest::Test
 
     define_method("test_stats_#{fname}") do
       bw = Bio::BigWig.new(public_send(fname))
-      assert_equal([0.2000000054637591], bw.stats("1", 0, 3, nil, nil, nil))
-      assert_equal([0.30000001192092896], bw.stats("1", 0, 3, nil, "max", nil))
-      assert_equal([1.399999976158142, 1.5], bw.stats("1", 99, 200, 2, "max", nil))
-      assert_equal([1.3351851569281683], bw.stats("1", nil, nil, nil, nil, nil))
+      assert_equal([0.2000000054637591], bw.stats("1", 0, 3))
+      assert_equal([0.30000001192092896], bw.stats("1", 0, 3, type: "max"))
+      assert_equal([1.399999976158142, 1.5], bw.stats("1", 99, 200, type: "max", nbins: 2))
+      assert_equal([1.3351851569281683], bw.stats("1"))
       bw.close
     end
 

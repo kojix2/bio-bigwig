@@ -28,7 +28,7 @@ module Bio
       @fname
     end
 
-    def stats(chrom, start, stop, nbins, type, exact)
+    def stats(chrom, start = nil, stop = nil, nbins: nil, type: nil, exact: nil)
       stats_raw(chrom, start, stop, nbins, type, exact)
     end
 

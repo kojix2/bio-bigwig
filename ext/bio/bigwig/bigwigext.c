@@ -317,7 +317,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
 
   if (rb_exact != Qnil)
   {
-    if (NUM2INT(rb_exact) == 1)
+    if (RTEST(rb_exact) == 1)
       endl = startl + nBins - 1;
   }
 
