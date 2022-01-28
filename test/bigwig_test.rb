@@ -61,6 +61,12 @@ class BigWigTest < Minitest::Test
       bw.close
     end
 
+    define_method("test_sum_#{fname}") do
+      bw = Bio::BigWig.new(public_send(fname))
+      assert([35.0, 36.5], bw.stats("1", 100, 151, type: "sum", nbins: 2))
+      bw.close
+    end
+
     define_method("test_values_#{fname}") do
       bw = Bio::BigWig.new(public_send(fname))
       assert_equal(
