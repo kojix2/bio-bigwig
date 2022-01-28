@@ -29,7 +29,7 @@ module Bio
     end
 
     def stats(chrom, start = nil, stop = nil, nbins: nil, type: nil, exact: nil)
-      stats_raw(chrom, start, stop, nbins, type, exact)
+      stats_raw(chrom, start, stop, nbins, type&.to_s, exact)
     end
 
     def values(chrom, start = 0, stop = -1)
