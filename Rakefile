@@ -9,8 +9,6 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList["test/**/*_test.rb"]
 end
 
-task default: :test
-
 require "rake/extensiontask"
 
 task build: :compile
@@ -20,4 +18,15 @@ Rake::ExtensionTask.new("bigwigext") do |ext|
   ext.lib_dir = "lib/bio/bigwig"
 end
 
-task default: %i[clobber compile test]
+desc "Remove object file"
+task :remove_object_file do
+  FileUtils.rm_f("ext/bio/bigwig/bigwigext.o")
+  FileUtils.rm_f("ext/bio/bigwig/bigwigext.bundle")
+end
+
+task default: %i[
+  remove_object_file
+  compile
+  remove_object_file
+  test
+]
