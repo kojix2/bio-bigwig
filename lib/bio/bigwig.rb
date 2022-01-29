@@ -5,8 +5,8 @@ require_relative "bigwig/bigwigext"
 
 module Bio
   class BigWig
-    def self.open(*args, **kwargs)
-      file = new(*args, **kwargs)
+    def self.open(...)
+      file = new(...)
       return file unless block_given?
 
       begin
@@ -17,11 +17,11 @@ module Bio
       file
     end
 
-    def initialize(fname, rw = "r")
+    def initialize(fname, mode = "r")
       raise "BigWig::new() does not take block; use BigWig::open() instead" if block_given?
 
       @fname = fname
-      initialize_raw(fname, rw)
+      initialize_raw(fname, mode)
     end
 
     def path

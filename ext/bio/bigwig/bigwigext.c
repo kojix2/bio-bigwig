@@ -101,8 +101,8 @@ int hasEntries(bigWigFile_t *bw)
 static VALUE
 bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
 {
-  char *fname;
-  char *mode;
+  char *fname = NULL;
+  char *mode = "r";
   bigWigFile_t *bw = NULL;
 
   fname = StringValueCStr(rb_fname);
@@ -117,11 +117,13 @@ bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
   {
     bw = bbOpen(fname, NULL);
   }
+
   if (!bw)
   {
-    fprintf(stderr, "[pyBwOpen] bw is NULL!\n");
+    fprintf(stderr, "bw is NULL!\n");
     goto error;
   }
+
   if (!mode || !strchr(mode, 'w'))
   {
     if (!bw->cl)
