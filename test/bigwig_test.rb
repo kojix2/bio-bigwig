@@ -32,9 +32,13 @@ class BigWigTest < Minitest::Test
   def test_file_type
     Bio::BigWig.open(bwfile) do |bw|
       assert_equal "BigWig", bw.file_type
+      assert_equal true, bw.is_bigwig?
+      assert_equal false, bw.is_bigbed?
     end
     Bio::BigWig.open(bbfile) do |bb|
       assert_equal "BigBed", bb.file_type
+      assert_equal false, bb.is_bigwig?
+      assert_equal true, bb.is_bigbed?
     end
   end
 

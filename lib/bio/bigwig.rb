@@ -5,8 +5,8 @@ require_relative "bigwig/bigwigext"
 
 module Bio
   class BigWig
-    def self.open(...)
-      file = new(...)
+    def self.open(*args, **kwargs)
+      file = new(*args, **kwargs)
       return file unless block_given?
 
       begin
