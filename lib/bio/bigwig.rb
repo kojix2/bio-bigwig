@@ -39,12 +39,5 @@ module Bio
     def intervals(chrom, start = 0, stop = -1)
       intervals_raw(chrom, start, stop)
     end
-
-    BIGWIG_MAGIC      = 0x888FFC26
-    BIGBED_MAGIC      = 0x8789F2EB
-    CIRTREE_MAGIC     = 0x78ca8c91
-    IDX_MAGIC         = 0x2468ace0
-    DEFAULT_nCHILDREN = 64
-    DEFAULT_BLOCKSIZE = 32_768
   end
 end
