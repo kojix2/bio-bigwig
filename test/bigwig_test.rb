@@ -75,6 +75,7 @@ class BigWigTest < Minitest::Test
       assert_equal([0.30000001192092896], bw.stats("1", 0, 3, type: "max"))
       assert_equal([1.399999976158142, 1.5], bw.stats("1", 99, 200, type: "max", nbins: 2))
       assert_equal([1.3351851569281683], bw.stats("1"))
+      assert_equal([0.03], bw.stats("1", 0, 100, type: "coverage"))
       bw.close
     end
 
@@ -97,6 +98,7 @@ class BigWigTest < Minitest::Test
         r[0..2]
       )
       assert_equal(true, r[3].nan?)
+      assert_raises(ArgumentError) { bw.values("1") }
       bw.close
     end
 

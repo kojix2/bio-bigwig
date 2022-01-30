@@ -345,7 +345,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
 
   if (char2enum(type) == doesNotExist)
   {
-    rb_raise(rb_eRuntimeError, "Invalid type!");
+    rb_raise(rb_eRuntimeError, "Invalid type! : %s", type);
     return Qnil;
   }
 

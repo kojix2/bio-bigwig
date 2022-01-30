@@ -32,7 +32,7 @@ module Bio
       stats_raw(chrom, start, stop, nbins, type&.to_s, exact)
     end
 
-    def values(chrom, start = 0, stop = -1)
+    def values(chrom, start, stop)
       values_raw(chrom, start, stop)
     end
 
