@@ -377,14 +377,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
   ret = rb_ary_new2(nBins);
   for (i = 0; i < nBins; i++)
   {
-    if (isnan(val[i]))
-    {
-      rb_ary_store(ret, i, Qnil);
-    }
-    else
-    {
-      rb_ary_store(ret, i, rb_float_new(val[i]));
-    }
+    rb_ary_store(ret, i, rb_float_new(val[i]));
   }
   free(val);
 
