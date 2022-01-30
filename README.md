@@ -57,7 +57,7 @@ bw.stats("1", 0, 3)
 # min      - the minimum value
 # max      - the maximum value
 # coverage - the fraction of bases covered
-# std      - he standard deviation of the values
+# std      - the standard deviation of the values
 
 bw.stats("1", 0, 3, type: :max)
 # [0.30000001192092896]
