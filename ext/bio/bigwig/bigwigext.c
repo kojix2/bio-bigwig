@@ -553,6 +553,107 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 }
 
 static VALUE
+bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_with_string)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  uint32_t start, end = -1, tid, i;
+  unsigned long startl, endl;
+  char *chrom;
+  VALUE ret, t;
+  int withString = 1;
+  bbOverlappingEntries_t *o;
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigBed file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->type == 0)
+  {
+    rb_raise(rb_eRuntimeError, "bigWig files have no entries! Use 'values' or 'intervals' instead.");
+    return Qnil;
+  }
+
+  if (rb_chrom != Qnil)
+  {
+    chrom = StringValueCStr(rb_chrom);
+  }
+
+  if (rb_start != Qnil)
+    startl = NUM2LONG(rb_start);
+
+  if (rb_end != Qnil)
+    endl = NUM2LONG(rb_end);
+
+  if (rb_with_string != Qnil)
+  {
+    if (RTEST(rb_with_string))
+      withString = 1;
+    else
+      withString = 0;
+  }
+
+  tid = bwGetTid(bw, chrom);
+
+  //Sanity check
+  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
+    endl = bw->cl->len[tid];
+  if (tid == (uint32_t)-1 || startl > end || endl > end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  start = (uint32_t)startl;
+  end = (uint32_t)endl;
+
+  if (end <= start || end > bw->cl->len[tid] || start >= end)
+  {
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+    return Qnil;
+  }
+
+  o = bbGetOverlappingEntries(bw, chrom, start, end, withString);
+  if (!o)
+  {
+    rb_raise(rb_eRuntimeError, "An error occurred while fetching the overlapping entries!\n");
+    return Qnil;
+  }
+  if (!o->l)
+  {
+    return rb_ary_new2(0);
+  }
+
+  ret = rb_ary_new2(o->l);
+  if (!ret)
+    goto error;
+
+  for (i = 0; i < o->l; i++)
+  {
+    if (withString)
+    {
+      t = rb_ary_new3(3, UINT32_2NUM(o->start[i]), UINT32_2NUM(o->end[i]), rb_str_new2(o->str[i]));
+    }
+    else
+    {
+      t = rb_ary_new3(2, UINT32_2NUM(o->start[i]), UINT32_2NUM(o->end[i]));
+    }
+    if (!t)
+      goto error;
+    rb_ary_store(ret, i, t);
+  }
+
+  bbDestroyOverlappingEntries(o);
+  return ret;
+
+error:
+  bbDestroyOverlappingEntries(o);
+  rb_raise(rb_eRuntimeError, "An error occurred while constructing the output!\n");
+  return Qnil;
+}
+
+static VALUE
 bw_get_file_type(VALUE self)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
@@ -613,6 +714,7 @@ void Init_bigwigext()
   rb_define_private_method(rb_BigWig, "stats_raw", bw_get_stats, 6);
   rb_define_private_method(rb_BigWig, "values_raw", bw_get_values, 3);
   rb_define_private_method(rb_BigWig, "intervals_raw", bw_get_intervals, 3);
+  rb_define_private_method(rb_BigWig, "entries_raw", bb_get_entries, 4);
   rb_define_method(rb_BigWig, "file_type", bw_get_file_type, 0);
   rb_define_method(rb_BigWig, "is_bigwig?", bw_is_bigwig_q, 0);
   rb_define_method(rb_BigWig, "is_bigbed?", bw_is_bigbed_q, 0);

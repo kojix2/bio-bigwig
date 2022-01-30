@@ -116,4 +116,19 @@ class BigWigTest < Minitest::Test
       bw.close
     end
   end
+
+  def test_bb_entry
+    bb = Bio::BigWig.new(bbfile)
+    o = bb.entries("chr1", 10_000_000, 10_020_000)
+    expected = [[10_009_333, 10_009_640, "61035\t130\t-\t0.026\t0.42\t404"],
+                [10_014_007, 10_014_289, "61047\t136\t-\t0.029\t0.42\t404"],
+                [10_014_373, 10_024_307, "61048\t630\t-\t5.420\t0.00\t2672399"]]
+    assert_equal expected, o
+    o = bb.entries("chr1", 10_000_000, 10_020_000, text: false)
+    expected = [[10_009_333, 10_009_640],
+                [10_014_007, 10_014_289],
+                [10_014_373, 10_024_307]]
+    assert_equal expected, o
+    bb.close
+  end
 end

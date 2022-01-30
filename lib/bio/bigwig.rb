@@ -39,5 +39,9 @@ module Bio
     def intervals(chrom, start = 0, stop = -1)
       intervals_raw(chrom, start, stop)
     end
+
+    def entries(chrom, start = 0, stop = -1, text: true)
+      entries_raw(chrom, start, stop, text)
+    end
   end
 end
