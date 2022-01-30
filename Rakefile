@@ -20,12 +20,13 @@ end
 
 desc "Remove object file"
 task :remove_object_file do
-  FileUtils.rm_f("ext/bio/bigwig/bigwigext.o")
-  FileUtils.rm_f("ext/bio/bigwig/bigwigext.bundle")
+  Dir["ext/**/*.{o,bundle}"].each do |f|
+    FileUtils.rm(f)
+  end
 end
 
 task default: %i[
-  remove_object_file
+  clobber
   compile
   remove_object_file
   test

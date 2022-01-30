@@ -18,11 +18,13 @@ if find_executable("curl-config")
   end
 end
 
-$objs = Dir.glob(["{.,libBigWig}/*.c"], base: __dir__)
+# dir_config("libbigwig")
+# unless find_header("bigWig.h") && have_library("bigwig")
+$INCFLAGS << " -I$(srcdir)/libBigWig"
+$VPATH    << "$(srcdir)/libBigWig"
+$srcs = Dir.glob(["{.,libBigWig}/*.c"], base: __dir__)
            .map { |f| File.expand_path(f, __dir__) }
-           .map { |f| f.sub(/\.c$/, ".o") }
-
-# $INCFLAGS << " -I$(srcdir)/libBigWig"
-# $VPATH    << "$(srcdir)/libBigWig"
+$objs = $srcs.map { |f| f.sub(/\.c$/, ".o") }
+# end
 
 create_makefile("bio/bigwig/bigwigext")
