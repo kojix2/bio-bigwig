@@ -7,18 +7,6 @@ Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig) compatible wi
 
 ## Installation
 
-Installation from source.
-
-```
-git clone --recursive https://github.com/kojix2/bio-bigwig
-cd bio-bigwig
-bundle install
-bundle exec rake compile
-bundle exec rake install
-```
-
-Not yet uploaded to the Gem server.
-
 ```
 gem install bio-bigwig
 ```
