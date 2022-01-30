@@ -25,7 +25,7 @@ gem install bio-bigwig
 
 ## Usage
 
-[bigWig](https://genome.ucsc.edu/goldenPath/help/bigWig.html)
+[bigWig Track Format](https://genome.ucsc.edu/goldenPath/help/bigWig.html)
 
 ```ruby
 require "bio/bigwig"
@@ -53,14 +53,17 @@ bw.header
 bw.stats("1", 0, 3)
 # [0.2000000054637591]
 
-# mean     - the average value (default)
-# min      - the minimum value
-# max      - the maximum value
-# coverage - the fraction of bases covered
-# std      - the standard deviation of the values
-
 bw.stats("1", 0, 3, type: :max)
 # [0.30000001192092896]
+
+# types
+# mean         - the average value (default)
+# min          - the minimum value
+# max          - the maximum value
+# cov/coverage - the fraction of bases covered
+# std          - the standard deviation of the values
+# dev          - 
+# sum          - 
 
 bw.stats("1",99, 200, type: :max, nbins: 2)
 # [1.399999976158142, 1.5]
@@ -82,7 +85,7 @@ bw.intervals("1")
 # [100, 150, 1.399999976158142], [150, 151, 1.5]]
 ```
 
-[bigBed](https://genome.ucsc.edu/goldenPath/help/bigBed.html)
+[bigBed Track Format](https://genome.ucsc.edu/goldenPath/help/bigBed.html)
 
 ```ruby
 require "bio/bigwig"
