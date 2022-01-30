@@ -152,7 +152,7 @@ class BigWigTest < Minitest::Test
     assert_equal(expected, bb.sql)
     bb.close
     bw = Bio::BigWig.open(bwfile)
-    assert_equal(expected, bb.sql)
+    assert_raises { bb.sql }
     bw.close
   end
 end
