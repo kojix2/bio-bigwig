@@ -53,8 +53,20 @@ bw.header
 bw.stats("1", 0, 3)
 # [0.2000000054637591]
 
+# mean     - the average value (default)
+# min      - the minimum value
+# max      - the maximum value
+# coverage - the fraction of bases covered
+# std      - he standard deviation of the values
+
 bw.stats("1", 0, 3, type: :max)
 # [0.30000001192092896]
+
+bw.stats("1",99, 200, type: :max, nbins: 2)
+# [1.399999976158142, 1.5]
+
+bw.stats("1")
+# [1.3351851569281683]
 
 bw.values("1", 0, 3)
 # [0.10000000149011612, 0.20000000298023224, 0.30000001192092896]
@@ -86,7 +98,22 @@ bb = Bio::BigWig.open("test/fixtures/test.bigBed")
 bb.entries("chr1", 10000000, 10020000, text: false) 
 # [[10009333, 10009640],                  
 #  [10014007, 10014289],                  
-#  [10014373, 10024307]]   
+#  [10014373, 10024307]] 
+
+bb.sql
+# table RnaElements 
+# "BED6 + 3 scores for RNA Elements data "                                   
+#     (                                                                      
+#     string chrom;      "Reference sequence chromosome or scaffold"         
+#     uint   chromStart; "Start position in chromosome"                      
+#     uint   chromEnd;   "End position in chromosome"                        
+#     string name;       "Name of item"                                      
+#     uint   score;      "Normalized score from 0-1000"
+#     char[1] strand;    "+ or - or . for unknown"
+#     float level;       "Expression level such as RPKM or FPKM. Set to -1 for no data."
+#     float signif;      "Statistical significance such as IDR. Set to -1 for no data."
+#     uint score2;       "Additional measurement/count e.g. number of reads. Set to 0 for no data."
+#     )
 ```
 
 ## Development
