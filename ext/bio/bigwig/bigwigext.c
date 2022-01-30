@@ -654,6 +654,38 @@ error:
 }
 
 static VALUE
+bb_get_sql(VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+  VALUE ret;
+  char *str;
+
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigBed file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->type == 0)
+  {
+    rb_raise(rb_eRuntimeError, "bigWig files have no entries!");
+    return Qnil;
+  }
+
+  str = bbGetSQL(bw);
+  if (!str)
+  {
+    return Qnil;
+  }
+
+  ret = rb_str_new2(str);
+  if (str)
+    free(str);
+
+  return ret;
+}
+
+static VALUE
 bw_get_file_type(VALUE self)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
@@ -715,6 +747,7 @@ void Init_bigwigext()
   rb_define_private_method(rb_BigWig, "values_raw", bw_get_values, 3);
   rb_define_private_method(rb_BigWig, "intervals_raw", bw_get_intervals, 3);
   rb_define_private_method(rb_BigWig, "entries_raw", bb_get_entries, 4);
+  rb_define_method(rb_BigWig, "sql", bb_get_sql, 0);
   rb_define_method(rb_BigWig, "file_type", bw_get_file_type, 0);
   rb_define_method(rb_BigWig, "is_bigwig?", bw_is_bigwig_q, 0);
   rb_define_method(rb_BigWig, "is_bigbed?", bw_is_bigbed_q, 0);
