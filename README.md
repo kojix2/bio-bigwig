@@ -2,7 +2,7 @@
 
 Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig) compatible with [pyBigWig](https://github.com/deeptools/pyBigWig).
 
-* Currently, curl does not seem to work well.
+* Currently, curl does not seem to work well ((Pull requests welcome)).
 * File writing is not implemented.
 
 ## Installation
@@ -24,6 +24,8 @@ gem install bio-bigwig
 ```
 
 ## Usage
+
+[bigWig](https://genome.ucsc.edu/goldenPath/help/bigWig.html)
 
 ```ruby
 require "bio/bigwig"
@@ -68,7 +70,11 @@ bw.intervals("1")
 # [100, 150, 1.399999976158142], [150, 151, 1.5]]
 ```
 
+[bigBed](https://genome.ucsc.edu/goldenPath/help/bigBed.html)
+
 ```ruby
+require "bio/bigwig"
+
 bb = Bio::BigWig.open("test/fixtures/test.bigBed")
 
 bb.entries("chr1", 10000000, 10020000) 
