@@ -111,12 +111,17 @@ bb.sql
 #     )
 ```
 
-## Development
-
-Pull requests are welcome!
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/kojix2/bio-bigwig.
+
+## Development
+
+Pull requests are welcome!
+
+    Do you need commit rights to my repository?
+    Do you want to get admin rights and take over the project?
+    If so, please feel free to contact us @kojix2.
 
 ## License
 
