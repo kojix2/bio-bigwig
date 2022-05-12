@@ -10,13 +10,9 @@ jobs:
         os:   ['ubuntu', 'macos']
         ruby: [ '2.7', '3.0' ]
     steps:
-      - uses: actions/checkout@v2
-      - name: Checkout submodule
-        shell: bash
-        run: |
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git submodule update --init --force --recursive
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Install libcurl4 (ubuntu)
         if: ${{ matrix.os == 'ubuntu' }}
         run: |
