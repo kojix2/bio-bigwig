@@ -20,4 +20,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.extensions    = %w[ext/bio/bigwig/extconf.rb]
+
+  spec.metadata['msys2_mingw_dependencies'] = "curl"
 end
