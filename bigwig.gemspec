@@ -15,8 +15,11 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 
-  spec.files         = Dir["*.{md,txt}", "{lib,ext}/**/*.{c,h,rb}",
-                           "LICENSE", "ext/bio/bigwig/libBigWig/LICENSE"]
+  spec.files         = Dir["*.{md,txt}",
+                           "lib/**/*rb",
+                           "ext/bio/bigwig/*.{rb,c,h}",
+                           "ext/bio/bigwig/libBigWig/*.{c,h}",
+                           "LICENSE", "ext/bio/bigwig/libBigWig/LICENSE" ]
   spec.require_paths = ["lib"]
 
   spec.extensions    = %w[ext/bio/bigwig/extconf.rb]
