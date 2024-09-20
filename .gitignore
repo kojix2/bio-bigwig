@@ -13,4 +13,5 @@
 *.o
 *.so
 *.dylib
+*.bundle
 *.dll
