@@ -1,30 +1,12 @@
-# frozen_string_literal: true
-
 require "mkmf"
 
-# https://github.com/taf2/curb/blob/master/ext/extconf.rb
-dir_config("curl")
-if find_executable("curl-config")
-  $CFLAGS << " #{`curl-config --cflags`.strip} -g"
-  $LIBS << if ENV["STATIC_BUILD"]
-             " #{`curl-config --static-libs`.strip}"
-           else
-             " #{`curl-config --libs`.strip}"
-           end
-  ca_bundle_path = `curl-config --ca`.strip
-  if !ca_bundle_path.nil? && (ca_bundle_path != "")
-    $defs.push(%(-D HAVE_CURL_CONFIG_CA))
-    $defs.push(%(-D CURL_CONFIG_CA='#{ca_bundle_path.inspect}'))
-  end
-end
+# check curl
+have_library("curl", "curl_easy_init")
+have_header("libbigwig/bigWig.h")
 
-# dir_config("libbigwig")
-# unless find_header("bigWig.h") && have_library("bigwig")
-$INCFLAGS << " -I$(srcdir)/libBigWig"
-$VPATH    << "$(srcdir)/libBigWig"
-$srcs = Dir.glob(["{.,libBigWig}/*.c"], base: __dir__)
-           .map { |f| File.expand_path(f, __dir__) }
-$objs = $srcs.map { |f| f.sub(/\.c$/, ".o") }
-# end
+$srcs = Dir.glob("libBigWig/*.c", base: __dir__)
+           .map { |src| File.expand_path(src, __dir__) }
+           .unshift(File.expand_path("bigwigext.c", __dir__))
+$objs = $srcs.map { |src| src.gsub(/\.c\z/, ".o") }
 
 create_makefile("bio/bigwig/bigwigext")
