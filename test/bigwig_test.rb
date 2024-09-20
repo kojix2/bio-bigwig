@@ -19,14 +19,25 @@ class BigWigTest < Minitest::Test
     "https://raw.githubusercontent.com/dpryan79/pyBigWig/master/pyBigWigTest/test.bw"
   end
 
-  def bedfile
-    File.expand_path("fixtures/test.bigBed", __dir__)
-  end
-
   def test_open
     bw = Bio::BigWig.new(bwfile)
     assert_equal Bio::BigWig, bw.class
     bw.close
+  end
+
+  def test_open_with_block
+    Bio::BigWig.open(bwfile) do |bw|
+      assert_equal Bio::BigWig, bw.class
+    end
+  end
+
+  def test_open_remote
+    skip "Skipping remote test" unless ENV['RUN_REMOTE_TESTS'] == '1'
+
+    Bio::BigWig.open(bwurl) do |bw|
+      assert_equal Bio::BigWig, bw.class
+      assert_equal "BigWig", bw.file_type
+    end
   end
 
   def test_file_type
@@ -62,6 +73,7 @@ class BigWigTest < Minitest::Test
   %i[bwfile].each do |fname|
     define_method("test_chroms_#{fname}") do
       bw = Bio::BigWig.new(public_send(fname))
+      assert_instance_of(Hash, bw.chroms)
       assert_equal({ "1" => 195_471_971, "10" => 130_694_993 }, bw.chroms)
       assert_equal(195_471_971, bw.chroms("1"))
       assert_equal(130_694_993, bw.chroms("10"))
