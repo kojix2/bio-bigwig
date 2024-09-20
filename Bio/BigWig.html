@@ -338,7 +338,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>0 = BigWig.</p>
+</div></span>
   
 </li>
 
@@ -780,7 +782,6 @@ bigwig_close(VALUE self)
       <pre class="lines">
 
 
-681
 682
 683
 684
@@ -795,10 +796,11 @@ bigwig_close(VALUE self)
 693
 694
 695
-696</pre>
+696
+697</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 681</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 682</span>
 
 static VALUE
 bw_get_file_type(VALUE self)
@@ -957,6 +959,8 @@ error:
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>0 = BigWig</p>
+
 
   </div>
 </div>
@@ -982,37 +986,19 @@ error:
       <pre class="lines">
 
 
-713
-714
-715
-716
-717
-718
-719
-720
-721
-722
-723
-724
-725
-726</pre>
+726
+727
+728
+729
+730</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 713</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 726</span>
 
 static VALUE
 bw_is_bigbed_q(VALUE self)
 {
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (bw-&gt;type == 1)
-  {
-    return Qtrue;
-  }
-  else
-  {
-    return Qfalse;
-  }
+  return bw_is_file_type(self, 1); // 1 = BigBed
 }</pre>
     </td>
   </tr>
@@ -1056,37 +1042,19 @@ bw_is_bigbed_q(VALUE self)
       <pre class="lines">
 
 
-698
-699
-700
-701
-702
-703
-704
-705
-706
-707
-708
-709
-710
-711</pre>
+720
+721
+722
+723
+724</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 698</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 720</span>
 
 static VALUE
 bw_is_bigwig_q(VALUE self)
 {
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (bw-&gt;type == 0)
-  {
-    return Qtrue;
-  }
-  else
-  {
-    return Qfalse;
-  }
+  return bw_is_file_type(self, 0); // 0 = BigWig
 }</pre>
     </td>
   </tr>
@@ -1138,7 +1106,6 @@ bw_is_bigwig_q(VALUE self)
       <pre class="lines">
 
 
-649
 650
 651
 652
@@ -1168,10 +1135,11 @@ bw_is_bigwig_q(VALUE self)
 676
 677
 678
-679</pre>
+679
+680</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 649</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 650</span>
 
 static VALUE
 bb_get_sql(VALUE self)
@@ -1274,7 +1242,7 @@ bb_get_sql(VALUE self)
 </div>
 
       <div id="footer">
-  Generated on Fri Sep 20 03:51:38 2024 by
+  Generated on Fri Sep 20 04:27:38 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.5).
 </div>
