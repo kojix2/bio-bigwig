@@ -89,12 +89,12 @@ bigwig_allocate(VALUE klass)
   return TypedData_Wrap_Struct(klass, &BigWig_type, bw);
 }
 
-//Return 1 if there are any entries at all
+// Return 1 if there are any entries at all
 int hasEntries(bigWigFile_t *bw)
 {
   if (bw->hdr->indexOffset != 0)
     return 1; // No index, no entries pyBigWig issue #111
-  //if(bw->hdr->nBasesCovered > 0) return 1;  // Sometimes headers are broken
+  // if(bw->hdr->nBasesCovered > 0) return 1;  // Sometimes headers are broken
   return 0;
 }
 
@@ -108,7 +108,7 @@ bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
   fname = StringValueCStr(rb_fname);
   mode = StringValueCStr(rb_mode);
 
-  //Open the local/remote file
+  // Open the local/remote file
   if (strchr(mode, 'w') != NULL || bwIsBigWig(fname, NULL))
   {
     bw = bwOpen(fname, NULL, mode);
@@ -130,7 +130,7 @@ bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
       goto error;
   }
 
-  //Set the data pointer
+  // Set the data pointer
   DATA_PTR(self) = bw;
 
   rb_ivar_set(self, rb_intern("@last_tid"), INT2NUM(-1));
@@ -498,7 +498,7 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 
   tid = bwGetTid(bw, chrom);
 
-  //Sanity check
+  // Sanity check
   if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
     endl = bw->cl->len[tid];
 
@@ -522,7 +522,7 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
     return rb_ary_new2(0);
   }
 
-  //Get the intervals
+  // Get the intervals
   intervals = bwGetOverlappingIntervals(bw, chrom, start, end);
   if (!intervals)
   {
@@ -589,7 +589,7 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
 
   tid = bwGetTid(bw, chrom);
 
-  //Sanity check
+  // Sanity check
   if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
     endl = bw->cl->len[tid];
   if (tid == (uint32_t)-1 || startl > end || endl > end)
@@ -641,7 +641,8 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
   return ret;
 
 error:
-  bbDestroyOverlappingEntries(o);
+  if (o)
+    bbDestroyOverlappingEntries(o);
   rb_raise(rb_eRuntimeError, "An error occurred while constructing the output!\n");
   return Qnil;
 }
@@ -696,11 +697,17 @@ bw_get_file_type(VALUE self)
 }
 
 static VALUE
-bw_is_bigwig_q(VALUE self)
+bw_is_file_type(VALUE self, int type_check)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
 
-  if (bw->type == 0)
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
+  if (bw->type == type_check)
   {
     return Qtrue;
   }
@@ -711,18 +718,15 @@ bw_is_bigwig_q(VALUE self)
 }
 
 static VALUE
+bw_is_bigwig_q(VALUE self)
+{
+  return bw_is_file_type(self, 0); // 0 = BigWig
+}
+
+static VALUE
 bw_is_bigbed_q(VALUE self)
 {
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (bw->type == 1)
-  {
-    return Qtrue;
-  }
-  else
-  {
-    return Qfalse;
-  }
+  return bw_is_file_type(self, 1); // 1 = BigBed
 }
 
 void Init_bigwigext()
