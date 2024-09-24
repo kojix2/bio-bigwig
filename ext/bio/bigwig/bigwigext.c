@@ -699,6 +699,12 @@ bw_get_file_type(VALUE self)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
 
+  if (!bw)
+  {
+    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    return Qnil;
+  }
+
   if (bw->type == 0)
   {
     return rb_str_new2("BigWig");
