@@ -668,7 +668,7 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, &quot;The bigWig file handle is not opened!&quot;);
+    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
     return Qnil;
   }
 
@@ -893,7 +893,13 @@ bigwig_is_closed(VALUE self)
 709
 710
 711
-712</pre>
+712
+713
+714
+715
+716
+717
+718</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 697</span>
@@ -902,6 +908,12 @@ static VALUE
 bw_get_file_type(VALUE self)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
+
+  if (!bw)
+  {
+    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
+    return Qnil;
+  }
 
   if (bw-&gt;type == 0)
   {
@@ -981,7 +993,7 @@ bw_get_header(VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, &quot;The bigWig file handle is not opened!&quot;);
+    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
     return Qnil;
   }
 
@@ -1082,14 +1094,14 @@ error:
       <pre class="lines">
 
 
-741
-742
-743
-744
-745</pre>
+747
+748
+749
+750
+751</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 741</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 747</span>
 
 static VALUE
 bw_is_bigbed_q(VALUE self)
@@ -1138,14 +1150,14 @@ bw_is_bigbed_q(VALUE self)
       <pre class="lines">
 
 
-735
-736
-737
-738
-739</pre>
+741
+742
+743
+744
+745</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 735</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 741</span>
 
 static VALUE
 bw_is_bigwig_q(VALUE self)
@@ -1246,7 +1258,7 @@ bb_get_sql(VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, &quot;The bigBed file handle is not opened!&quot;);
+    rb_raise(rb_eIOError, &quot;The bigBed file handle is not opened!&quot;);
     return Qnil;
   }
 
@@ -1338,7 +1350,7 @@ bb_get_sql(VALUE self)
 </div>
 
       <div id="footer">
-  Generated on Tue Sep 24 12:26:51 2024 by
+  Generated on Tue Sep 24 12:47:29 2024 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.3.5).
 </div>
