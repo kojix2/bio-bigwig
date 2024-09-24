@@ -163,6 +163,21 @@ bigwig_close(VALUE self)
 }
 
 static VALUE
+bigwig_is_closed(VALUE self)
+{
+  bigWigFile_t *bw = get_bigWigFile(self);
+
+  if (bw)
+  {
+    return Qfalse;
+  }
+  else
+  {
+    return Qtrue;
+  }
+}
+
+static VALUE
 bw_get_header(VALUE self)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
@@ -738,6 +753,7 @@ void Init_bigwigext()
 
   rb_define_private_method(rb_BigWig, "initialize_raw", bigwig_init, 2);
   rb_define_method(rb_BigWig, "close", bigwig_close, 0);
+  rb_define_method(rb_BigWig, "closed?", bigwig_is_closed, 0);
   rb_define_method(rb_BigWig, "header", bw_get_header, 0);
   rb_define_method(rb_BigWig, "chroms", bw_get_chroms, -1);
   rb_define_private_method(rb_BigWig, "stats_raw", bw_get_stats, 6);

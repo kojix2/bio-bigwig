@@ -31,8 +31,24 @@ class BigWigTest < Minitest::Test
     end
   end
 
+  def test_closed?
+    bw = Bio::BigWig.new(bwfile)
+    assert_equal Bio::BigWig, bw.class
+    assert_equal false, bw.closed?
+    assert_nil bw.close
+    assert_equal true, bw.closed?
+  end
+
+  def test_closed_with_block
+    f = Bio::BigWig.open(bwfile) do |bw|
+      assert_equal Bio::BigWig, bw.class
+      assert_equal false, bw.closed?
+    end
+    assert_equal true, f.closed?
+  end
+
   def test_open_remote
-    skip "Skipping remote test" unless ENV['RUN_REMOTE_TESTS'] == '1'
+    skip "Skipping remote test" unless ENV["RUN_REMOTE_TESTS"] == "1"
 
     Bio::BigWig.open(bwurl) do |bw|
       assert_equal Bio::BigWig, bw.class
