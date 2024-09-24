@@ -185,7 +185,7 @@ bw_get_header(VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -225,7 +225,7 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -299,7 +299,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -412,7 +412,7 @@ bw_get_values(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -484,7 +484,7 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -573,7 +573,7 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigBed file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigBed file handle is not opened!");
     return Qnil;
   }
 
@@ -671,7 +671,7 @@ bb_get_sql(VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigBed file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigBed file handle is not opened!");
     return Qnil;
   }
 
@@ -701,7 +701,7 @@ bw_get_file_type(VALUE self)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 
@@ -724,7 +724,7 @@ bw_is_file_type(VALUE self, int type_check)
 
   if (!bw)
   {
-    rb_raise(rb_eRuntimeError, "The bigWig file handle is not opened!");
+    rb_raise(rb_eIOError, "The bigWig file handle is not opened!");
     return Qnil;
   }
 

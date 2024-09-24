@@ -47,6 +47,21 @@ class BigWigTest < Minitest::Test
     assert_equal true, f.closed?
   end
 
+  def test_closed_file_error
+    bw = Bio::BigWig.new(bwfile)
+    assert_equal Bio::BigWig, bw.class
+    bw.close
+    assert_raises(IOError) { bw.header }
+    assert_raises(IOError) { bw.chroms }
+    assert_raises(IOError) { bw.stats("1") }
+    assert_raises(IOError) { bw.values("1", 0, 3) }
+    assert_raises(IOError) { bw.intervals("1", 0, 3) }
+    assert_raises(IOError) { bw.entries("1", 0, 3) }
+    assert_raises(IOError) { bw.sql }
+    assert_raises(IOError) { bw.is_bigwig? }
+    assert_raises(IOError) { bw.is_bigbed? }
+  end
+
   def test_open_remote
     skip "Skipping remote test" unless ENV["RUN_REMOTE_TESTS"] == "1"
 
