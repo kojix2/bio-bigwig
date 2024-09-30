@@ -91,7 +91,7 @@ bb.entries("chr1", 10000000, 10020000)
 #  [10014373, 10024307, "61048\t630\t-\t5.420\t0.00\t2672399"]]   
 
 bb = Bio::BigWig.open("test/fixtures/test.bigBed")
-bb.entries("chr1", 10000000, 10020000, text: false) 
+bb.entries("chr1", 10000000, 10020000, with_string: false) 
 # [[10009333, 10009640],                  
 #  [10014007, 10014289],                  
 #  [10014373, 10024307]] 
