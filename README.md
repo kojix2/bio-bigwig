@@ -3,6 +3,7 @@
 [![Gem Version](https://img.shields.io/gem/v/bio-bigwig?color=brightgreen)](https://rubygems.org/gems/bio-bigwig)
 [![test](https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml/badge.svg)](https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml)
 [![Docs Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://rubydoc.info/gems/bio-bigwig)
+[![DOI](https://zenodo.org/badge/438516085.svg)](https://doi.org/10.5281/zenodo.13860901)
 
 Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig) compatible with [pyBigWig](https://github.com/deeptools/pyBigWig).
 
