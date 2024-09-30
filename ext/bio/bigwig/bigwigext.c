@@ -332,12 +332,6 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
   if (rb_type != Qnil)
     type = StringValueCStr(rb_type);
 
-  if (rb_exact != Qnil)
-  {
-    if (RTEST(rb_exact) == 1)
-      endl = startl + nBins - 1;
-  }
-
   tid = bwGetTid(bw, chrom);
 
   if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
