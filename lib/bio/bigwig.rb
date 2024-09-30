@@ -40,8 +40,8 @@ module Bio
       intervals_raw(chrom, start, stop)
     end
 
-    def entries(chrom, start = 0, stop = -1, text: true)
-      entries_raw(chrom, start, stop, text)
+    def entries(chrom, start = 0, stop = -1, with_string: true)
+      entries_raw(chrom, start, stop, with_string)
     end
   end
 end
