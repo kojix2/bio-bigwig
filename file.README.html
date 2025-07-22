@@ -64,7 +64,7 @@
 
 <p>Ruby wrapper to <a href="https://github.com/dpryan79/libBigWig">libBigWig</a> compatible with <a href="https://github.com/deeptools/pyBigWig">pyBigWig</a>.</p>
 <ul><li>
-<p>Currently, curl does not seem to work well ((Pull requests welcome)).</p>
+<p>Supports both local and remote file access via HTTP/HTTPS.</p>
 </li><li>
 <p>File writing is not implemented.</p>
 </li></ul>
@@ -91,13 +91,13 @@
 </span>
 <span class='id identifier rubyid_bw'>bw</span><span class='period'>.</span><span class='id identifier rubyid_header'>header</span>
 <span class='comment'># {
-</span><span class='comment'>#           :version =&gt; 4,       the version number                        
-</span><span class='comment'>#            :levels =&gt; 1,       the number of zoom levels                       
-</span><span class='comment'>#     :bases_covered =&gt; 154,     the number of bases described                        
-</span><span class='comment'>#           :min_val =&gt; 0,       the minimum value                       
-</span><span class='comment'>#           :max_val =&gt; 2,       the maximum value                        
-</span><span class='comment'>#          :sum_data =&gt; 272,     the sum of all values                        
-</span><span class='comment'>#       :sum_squared =&gt; 500      the sum of all squared values                        
+</span><span class='comment'>#           :version =&gt; 4,       the version number
+</span><span class='comment'>#            :levels =&gt; 1,       the number of zoom levels
+</span><span class='comment'>#     :bases_covered =&gt; 154,     the number of bases described
+</span><span class='comment'>#           :min_val =&gt; 0,       the minimum value
+</span><span class='comment'>#           :max_val =&gt; 2,       the maximum value
+</span><span class='comment'>#          :sum_data =&gt; 272,     the sum of all values
+</span><span class='comment'>#       :sum_squared =&gt; 500      the sum of all squared values
 </span><span class='comment'># }
 </span>
 <span class='id identifier rubyid_bw'>bw</span><span class='period'>.</span><span class='id identifier rubyid_stats'>stats</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span>
@@ -112,8 +112,8 @@
 </span><span class='comment'># max          - the maximum value
 </span><span class='comment'># cov/coverage - the fraction of bases covered
 </span><span class='comment'># std          - the standard deviation of the values
-</span><span class='comment'># dev          - 
-</span><span class='comment'># sum          - 
+</span><span class='comment'># dev          -
+</span><span class='comment'># sum          -
 </span>
 <span class='id identifier rubyid_bw'>bw</span><span class='period'>.</span><span class='id identifier rubyid_stats'>stats</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='int'>99</span><span class='comma'>,</span> <span class='int'>200</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:max</span><span class='comma'>,</span> <span class='label'>nbins:</span> <span class='int'>2</span><span class='rparen'>)</span>
 <span class='comment'># [1.399999976158142, 1.5]
@@ -141,25 +141,25 @@
 
 <span class='id identifier rubyid_bb'>bb</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Bio.html" title="Bio (module)">Bio</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Bio/BigWig.html" title="Bio::BigWig (class)">BigWig</a></span></span><span class='period'>.</span><span class='id identifier rubyid_open'><span class='object_link'><a href="Bio/BigWig.html#open-class_method" title="Bio::BigWig.open (method)">open</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test/fixtures/test.bigBed</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 
-<span class='id identifier rubyid_bb'>bb</span><span class='period'>.</span><span class='id identifier rubyid_entries'>entries</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>chr1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10000000</span><span class='comma'>,</span> <span class='int'>10020000</span><span class='rparen'>)</span> 
-<span class='comment'># [[10009333, 10009640, &quot;61035\t130\t-\t0.026\t0.42\t404&quot;],                  
-</span><span class='comment'>#  [10014007, 10014289, &quot;61047\t136\t-\t0.029\t0.42\t404&quot;],                  
-</span><span class='comment'>#  [10014373, 10024307, &quot;61048\t630\t-\t5.420\t0.00\t2672399&quot;]]   
+<span class='id identifier rubyid_bb'>bb</span><span class='period'>.</span><span class='id identifier rubyid_entries'>entries</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>chr1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10000000</span><span class='comma'>,</span> <span class='int'>10020000</span><span class='rparen'>)</span>
+<span class='comment'># [[10009333, 10009640, &quot;61035\t130\t-\t0.026\t0.42\t404&quot;],
+</span><span class='comment'>#  [10014007, 10014289, &quot;61047\t136\t-\t0.029\t0.42\t404&quot;],
+</span><span class='comment'>#  [10014373, 10024307, &quot;61048\t630\t-\t5.420\t0.00\t2672399&quot;]]
 </span>
 <span class='id identifier rubyid_bb'>bb</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Bio.html" title="Bio (module)">Bio</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Bio/BigWig.html" title="Bio::BigWig (class)">BigWig</a></span></span><span class='period'>.</span><span class='id identifier rubyid_open'><span class='object_link'><a href="Bio/BigWig.html#open-class_method" title="Bio::BigWig.open (method)">open</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test/fixtures/test.bigBed</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-<span class='id identifier rubyid_bb'>bb</span><span class='period'>.</span><span class='id identifier rubyid_entries'>entries</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>chr1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10000000</span><span class='comma'>,</span> <span class='int'>10020000</span><span class='comma'>,</span> <span class='label'>with_string:</span> <span class='kw'>false</span><span class='rparen'>)</span> 
-<span class='comment'># [[10009333, 10009640],                  
-</span><span class='comment'>#  [10014007, 10014289],                  
-</span><span class='comment'>#  [10014373, 10024307]] 
+<span class='id identifier rubyid_bb'>bb</span><span class='period'>.</span><span class='id identifier rubyid_entries'>entries</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>chr1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10000000</span><span class='comma'>,</span> <span class='int'>10020000</span><span class='comma'>,</span> <span class='label'>with_string:</span> <span class='kw'>false</span><span class='rparen'>)</span>
+<span class='comment'># [[10009333, 10009640],
+</span><span class='comment'>#  [10014007, 10014289],
+</span><span class='comment'>#  [10014373, 10024307]]
 </span>
 <span class='id identifier rubyid_bb'>bb</span><span class='period'>.</span><span class='id identifier rubyid_sql'>sql</span>
-<span class='comment'># table RnaElements 
-</span><span class='comment'># &quot;BED6 + 3 scores for RNA Elements data &quot;                                   
-</span><span class='comment'>#     (                                                                      
-</span><span class='comment'>#     string chrom;      &quot;Reference sequence chromosome or scaffold&quot;         
-</span><span class='comment'>#     uint   chromStart; &quot;Start position in chromosome&quot;                      
-</span><span class='comment'>#     uint   chromEnd;   &quot;End position in chromosome&quot;                        
-</span><span class='comment'>#     string name;       &quot;Name of item&quot;                                      
+<span class='comment'># table RnaElements
+</span><span class='comment'># &quot;BED6 + 3 scores for RNA Elements data &quot;
+</span><span class='comment'>#     (
+</span><span class='comment'>#     string chrom;      &quot;Reference sequence chromosome or scaffold&quot;
+</span><span class='comment'>#     uint   chromStart; &quot;Start position in chromosome&quot;
+</span><span class='comment'>#     uint   chromEnd;   &quot;End position in chromosome&quot;
+</span><span class='comment'>#     string name;       &quot;Name of item&quot;
 </span><span class='comment'>#     uint   score;      &quot;Normalized score from 0-1000&quot;
 </span><span class='comment'>#     char[1] strand;    &quot;+ or - or . for unknown&quot;
 </span><span class='comment'>#     float level;       &quot;Expression level such as RPKM or FPKM. Set to -1 for no data.&quot;
@@ -187,7 +187,7 @@ If so, please feel free to contact us @kojix2.
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jul 22 14:26:05 2025 by
+  Generated on Tue Jul 22 14:42:31 2025 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.4.5).
 </div>
