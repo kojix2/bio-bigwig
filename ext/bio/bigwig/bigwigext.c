@@ -276,7 +276,7 @@ enum bwStatsType char2enum(char *s)
     return cov;
   if (strcmp(s, "sum") == 0)
     return sum;
-  return -1;
+  return doesNotExist;
 };
 
 // double *bwStats        (bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end, uint32_t nBins, enum bwStatsType type);
