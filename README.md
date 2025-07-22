@@ -7,7 +7,7 @@
 
 Ruby wrapper to [libBigWig](https://github.com/dpryan79/libBigWig) compatible with [pyBigWig](https://github.com/deeptools/pyBigWig).
 
-* Currently, curl does not seem to work well ((Pull requests welcome)).
+* Supports both local and remote file access via HTTP/HTTPS.
 * File writing is not implemented.
 
 ## Installation
