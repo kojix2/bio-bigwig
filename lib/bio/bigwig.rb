@@ -96,5 +96,38 @@ module Bio
     def entries(chrom, start = 0, stop = -1, with_string: true)
       entries_raw(chrom, start, stop, with_string)
     end
+
+    # @!method close
+    #   Close the file handle
+    #   @return [nil]
+
+    # @!method closed?
+    #   Check if the file is closed
+    #   @return [Boolean] true if closed, false if open
+
+    # @!method chroms(chrom = nil)
+    #   Get chromosome information
+    #   @param chrom [String, nil] specific chromosome name (optional)
+    #   @return [Hash, Integer, nil] all chromosomes as Hash, or length of specific chromosome, or nil if not found
+
+    # @!method header
+    #   Get file header information
+    #   @return [Hash] header information including version, levels, bases_covered, min_val, max_val, sum_data, sum_squared
+
+    # @!method file_type
+    #   Get file type
+    #   @return [String] "BigWig" or "BigBed"
+
+    # @!method is_bigwig?
+    #   Check if file is BigWig format
+    #   @return [Boolean] true if BigWig, false otherwise
+
+    # @!method is_bigbed?
+    #   Check if file is BigBed format
+    #   @return [Boolean] true if BigBed, false otherwise
+
+    # @!method sql
+    #   Get SQL schema (BigBed files only)
+    #   @return [String, nil] SQL schema string, or nil if not available
   end
 end
