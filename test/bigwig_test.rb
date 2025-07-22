@@ -63,8 +63,6 @@ class BigWigTest < Minitest::Test
   end
 
   def test_open_remote
-    skip "Skipping remote test" unless ENV["RUN_REMOTE_TESTS"] == "1"
-
     Bio::BigWig.open(bwurl) do |bw|
       assert_equal Bio::BigWig, bw.class
       assert_equal "BigWig", bw.file_type
