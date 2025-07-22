@@ -207,10 +207,6 @@ bw_get_header(VALUE self)
   rb_hash_aset(rb_header, ID2SYM(rb_intern("sum_squared")), INT2NUM((int)bw->hdr->sumSquared));
 
   return rb_header;
-
-error:
-  rb_raise(rb_eRuntimeError, "Received an error while getting the bigWig header!");
-  return Qnil;
 }
 
 static VALUE
