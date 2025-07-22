@@ -604,6 +604,10 @@
       <pre class="lines">
 
 
+212
+213
+214
+215
 216
 217
 218
@@ -647,14 +651,10 @@
 256
 257
 258
-259
-260
-261
-262
-263</pre>
+259</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 216</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 212</span>
 
 static VALUE
 bw_get_chroms(int argc, VALUE *argv, VALUE self)
@@ -878,6 +878,9 @@ bigwig_is_closed(VALUE self)
       <pre class="lines">
 
 
+688
+689
+690
 691
 692
 693
@@ -896,13 +899,10 @@ bigwig_is_closed(VALUE self)
 706
 707
 708
-709
-710
-711
-712</pre>
+709</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 691</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 688</span>
 
 static VALUE
 bw_get_file_type(VALUE self)
@@ -976,11 +976,7 @@ bw_get_file_type(VALUE self)
 207
 208
 209
-210
-211
-212
-213
-214</pre>
+210</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 180</span>
@@ -1015,10 +1011,6 @@ bw_get_header(VALUE self)
   rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;sum_squared&quot;)), INT2NUM((int)bw-&gt;hdr-&gt;sumSquared));
 
   return rb_header;
-
-error:
-  rb_raise(rb_eRuntimeError, &quot;Received an error while getting the bigWig header!&quot;);
-  return Qnil;
 }</pre>
     </td>
   </tr>
@@ -1094,14 +1086,14 @@ error:
       <pre class="lines">
 
 
+738
+739
+740
 741
-742
-743
-744
-745</pre>
+742</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 741</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 738</span>
 
 static VALUE
 bw_is_bigbed_q(VALUE self)
@@ -1150,14 +1142,14 @@ bw_is_bigbed_q(VALUE self)
       <pre class="lines">
 
 
+732
+733
+734
 735
-736
-737
-738
-739</pre>
+736</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 735</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 732</span>
 
 static VALUE
 bw_is_bigwig_q(VALUE self)
@@ -1214,6 +1206,9 @@ bw_is_bigwig_q(VALUE self)
       <pre class="lines">
 
 
+656
+657
+658
 659
 660
 661
@@ -1241,13 +1236,10 @@ bw_is_bigwig_q(VALUE self)
 683
 684
 685
-686
-687
-688
-689</pre>
+686</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 659</span>
+      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 656</span>
 
 static VALUE
 bb_get_sql(VALUE self)
@@ -1350,7 +1342,7 @@ bb_get_sql(VALUE self)
 </div>
 
       <div id="footer">
-  Generated on Tue Jul 22 14:42:31 2025 by
+  Generated on Tue Jul 22 14:56:04 2025 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.4.5).
 </div>
