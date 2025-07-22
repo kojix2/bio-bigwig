@@ -744,8 +744,33 @@ bw_is_bigbed_q(VALUE self)
   return bw_is_file_type(self, 1); // 1 = BigBed
 }
 
+static int bigwig_initialized = 0;
+
+static void bigwig_cleanup_handler(void)
+{
+  if (bigwig_initialized)
+  {
+    bwCleanup();
+    bigwig_initialized = 0;
+  }
+}
+
 void Init_bigwigext()
 {
+  // Initialize libBigWig only once with proper error handling
+  if (!bigwig_initialized)
+  {
+    if (bwInit(1 << 17) != 0)
+    {
+      rb_raise(rb_eRuntimeError, "Failed to initialize libBigWig for remote access");
+      return;
+    }
+    bigwig_initialized = 1;
+
+    // Register cleanup handler to be called at process exit
+    atexit(bigwig_cleanup_handler);
+  }
+
   rb_Bio = rb_define_module("Bio");
   rb_BigWig = rb_define_class_under(rb_Bio, "BigWig", rb_cObject);
 
