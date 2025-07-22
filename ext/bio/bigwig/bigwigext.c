@@ -102,7 +102,7 @@ static VALUE
 bigwig_init(VALUE self, VALUE rb_fname, VALUE rb_mode)
 {
   char *fname = NULL;
-  char *mode = "r";
+  const char *mode = "r";
   bigWigFile_t *bw = NULL;
 
   fname = StringValueCStr(rb_fname);
@@ -258,7 +258,7 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
   return ret;
 }
 
-enum bwStatsType char2enum(char *s)
+enum bwStatsType char2enum(const char *s)
 {
   if (strcmp(s, "mean") == 0)
     return mean;
@@ -290,7 +290,8 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
   unsigned long startl = 0, endl = -1;
   uint32_t start, end = -1, tid;
   int nBins = 1, i;
-  char *chrom = NULL, *type = "mean";
+  char *chrom = NULL;
+  const char *type = "mean";
   VALUE ret;
 
   if (!bw)
@@ -469,7 +470,7 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
   uint32_t start, end = -1, tid, i;
   unsigned long startl = 0, endl = -1;
   bwOverlappingIntervals_t *intervals = NULL;
-  char *chrom;
+  char *chrom = NULL;
   VALUE ret;
 
   if (!bw)
@@ -555,8 +556,8 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
 {
   bigWigFile_t *bw = get_bigWigFile(self);
   uint32_t start, end = -1, tid, i;
-  unsigned long startl, endl;
-  char *chrom;
+  unsigned long startl = 0, endl = -1;
+  char *chrom = NULL;
   VALUE ret, t;
   int withString = 1;
   bbOverlappingEntries_t *o;
@@ -751,7 +752,7 @@ static void bigwig_cleanup_handler(void)
   }
 }
 
-void Init_bigwigext()
+void Init_bigwigext(void)
 {
   // Initialize libBigWig only once with proper error handling
   if (!bigwig_initialized)
