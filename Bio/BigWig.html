@@ -203,7 +203,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#chroms-instance_method" title="#chroms (instance method)">#<strong>chroms</strong>(*args)  &#x21d2; Object </a>
+      <a href="#chroms-instance_method" title="#chroms (instance method)">#<strong>chroms</strong>(*args)  &#x21d2; Hash, ... </a>
     
 
     
@@ -217,7 +217,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Get chromosome information.</p>
+</div></span>
   
 </li>
 
@@ -225,7 +227,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#close-instance_method" title="#close (instance method)">#<strong>close</strong>  &#x21d2; Object </a>
+      <a href="#close-instance_method" title="#close (instance method)">#<strong>close</strong>  &#x21d2; nil </a>
     
 
     
@@ -239,7 +241,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Close the file handle.</p>
+</div></span>
   
 </li>
 
@@ -261,7 +265,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Check if the file is closed.</p>
+</div></span>
   
 </li>
 
@@ -293,7 +299,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#file_type-instance_method" title="#file_type (instance method)">#<strong>file_type</strong>  &#x21d2; Object </a>
+      <a href="#file_type-instance_method" title="#file_type (instance method)">#<strong>file_type</strong>  &#x21d2; String </a>
     
 
     
@@ -307,7 +313,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Get file type.</p>
+</div></span>
   
 </li>
 
@@ -315,7 +323,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#header-instance_method" title="#header (instance method)">#<strong>header</strong>  &#x21d2; Object </a>
+      <a href="#header-instance_method" title="#header (instance method)">#<strong>header</strong>  &#x21d2; Hash </a>
     
 
     
@@ -329,7 +337,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Get file header information.</p>
+</div></span>
   
 </li>
 
@@ -425,7 +435,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Check if file is BigWig format.</p>
+</div></span>
   
 </li>
 
@@ -457,7 +469,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#sql-instance_method" title="#sql (instance method)">#<strong>sql</strong>  &#x21d2; Object </a>
+      <a href="#sql-instance_method" title="#sql (instance method)">#<strong>sql</strong>  &#x21d2; String<sup>?</sup> </a>
     
 
     
@@ -471,7 +483,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Get SQL schema (BigBed files only).</p>
+</div></span>
   
 </li>
 
@@ -760,118 +774,73 @@
       <div class="method_details first">
   <h3 class="signature first" id="chroms-instance_method">
   
-    #<strong>chroms</strong>(*args)  &#x21d2; <tt>Object</tt> 
+    #<strong>chroms</strong>(*args)  &#x21d2; <tt>Hash</tt>, ... 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get chromosome information</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>chrom</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>specific chromosome name (optional)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>, <tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>all chromosomes as Hash, or length of specific chromosome, or nil if not found</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 212</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 108</span>
 
-static VALUE
-bw_get_chroms(int argc, VALUE *argv, VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-  VALUE rb_chrom, val, ret;
-  char *chrom = NULL;
-  uint32_t i;
-
-  ret = Qnil; // return nil if no chrom is found
-
-  if (!bw)
-  {
-    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
-    return Qnil;
-  }
-
-  if (bw-&gt;isWrite == 1)
-  {
-    rb_raise(rb_eRuntimeError, &quot;Chromosomes cannot be accessed in files opened for writing!&quot;);
-    return Qnil;
-  }
-
-  rb_scan_args(argc, argv, &quot;01&quot;, &amp;rb_chrom);
-
-  if (argc == 0)
-  {
-    ret = rb_hash_new();
-    for (i = 0; i &lt; bw-&gt;cl-&gt;nKeys; i++)
-    {
-      val = ULONG2NUM(bw-&gt;cl-&gt;len[i]);
-      rb_hash_aset(ret, rb_str_new2(bw-&gt;cl-&gt;chrom[i]), val);
-    }
-  }
-  else
-  {
-    chrom = StringValueCStr(rb_chrom);
-    for (i = 0; i &lt; bw-&gt;cl-&gt;nKeys; i++)
-    {
-      if (strcmp(bw-&gt;cl-&gt;chrom[i], chrom) == 0)
-      {
-        ret = ULONG2NUM(bw-&gt;cl-&gt;len[i]);
-        break;
-      }
-    }
-  }
-
-  return ret;
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -880,48 +849,48 @@ bw_get_chroms(int argc, VALUE *argv, VALUE self)
       <div class="method_details ">
   <h3 class="signature " id="close-instance_method">
   
-    #<strong>close</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>close</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Close the file handle</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 151</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 100</span>
 
-static VALUE
-bigwig_close(VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (bw)
-  {
-    bwClose(bw);
-    DATA_PTR(self) = NULL;
-  }
-
-  return Qnil;
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -939,6 +908,8 @@ bigwig_close(VALUE self)
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>Check if the file is closed</p>
+
 
   </div>
 </div>
@@ -954,6 +925,11 @@ bigwig_close(VALUE self)
       
       
       
+        &mdash;
+        <div class='inline'>
+<p>true if closed, false if open</p>
+</div>
+      
     </li>
   
 </ul>
@@ -964,38 +940,12 @@ bigwig_close(VALUE self)
       <pre class="lines">
 
 
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 165</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 104</span>
 
-static VALUE
-bigwig_is_closed(VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (bw)
-  {
-    return Qfalse;
-  }
-  else
-  {
-    return Qtrue;
-  }
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1137,66 +1087,53 @@ bigwig_is_closed(VALUE self)
       <div class="method_details ">
   <h3 class="signature " id="file_type-instance_method">
   
-    #<strong>file_type</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>file_type</strong>  &#x21d2; <tt>String</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get file type</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>“BigWig” or “BigBed”</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-688
-689
-690
-691
-692
-693
-694
-695
-696
-697
-698
-699
-700
-701
-702
-703
-704
-705
-706
-707
-708
-709</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 688</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 117</span>
 
-static VALUE
-bw_get_file_type(VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-
-  if (!bw)
-  {
-    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
-    return Qnil;
-  }
-
-  if (bw-&gt;type == 0)
-  {
-    return rb_str_new2(&quot;BigWig&quot;);
-  }
-  else if (bw-&gt;type == 1)
-  {
-    return rb_str_new2(&quot;BigBed&quot;);
-  }
-
-  return rb_str_new2(&quot;Unknown&quot;);
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1205,84 +1142,53 @@ bw_get_file_type(VALUE self)
       <div class="method_details ">
   <h3 class="signature " id="header-instance_method">
   
-    #<strong>header</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>header</strong>  &#x21d2; <tt>Hash</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get file header information</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>header information including version, levels, bases_covered, min_val, max_val, sum_data, sum_squared</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 180</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 113</span>
 
-static VALUE
-bw_get_header(VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-  VALUE rb_header;
-
-  if (!bw)
-  {
-    rb_raise(rb_eIOError, &quot;The bigWig file handle is not opened!&quot;);
-    return Qnil;
-  }
-
-  if (bw-&gt;isWrite == 1)
-  {
-    rb_raise(rb_eRuntimeError, &quot;The header cannot be accessed in files opened for writing!&quot;);
-    return Qnil;
-  }
-
-  rb_header = rb_hash_new();
-
-  // FIXME return int or double?
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;version&quot;)), ULONG2NUM(bw-&gt;hdr-&gt;version));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;levels&quot;)), ULONG2NUM(bw-&gt;hdr-&gt;nLevels));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;bases_covered&quot;)), ULL2NUM(bw-&gt;hdr-&gt;nBasesCovered));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;min_val&quot;)), INT2NUM((int)bw-&gt;hdr-&gt;minVal));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;max_val&quot;)), INT2NUM((int)bw-&gt;hdr-&gt;maxVal));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;sum_data&quot;)), INT2NUM((int)bw-&gt;hdr-&gt;sumData));
-  rb_hash_aset(rb_header, ID2SYM(rb_intern(&quot;sum_squared&quot;)), INT2NUM((int)bw-&gt;hdr-&gt;sumSquared));
-
-  return rb_header;
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1442,20 +1348,12 @@ bw_get_header(VALUE self)
       <pre class="lines">
 
 
-738
-739
-740
-741
-742</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 738</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 125</span>
 
-static VALUE
-bw_is_bigbed_q(VALUE self)
-{
-  return bw_is_file_type(self, 1); // 1 = BigBed
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1473,6 +1371,8 @@ bw_is_bigbed_q(VALUE self)
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>Check if file is BigWig format</p>
+
 
   </div>
 </div>
@@ -1488,6 +1388,11 @@ bw_is_bigbed_q(VALUE self)
       
       
       
+        &mdash;
+        <div class='inline'>
+<p>true if BigWig, false otherwise</p>
+</div>
+      
     </li>
   
 </ul>
@@ -1498,20 +1403,12 @@ bw_is_bigbed_q(VALUE self)
       <pre class="lines">
 
 
-732
-733
-734
-735
-736</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 732</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 121</span>
 
-static VALUE
-bw_is_bigwig_q(VALUE self)
-{
-  return bw_is_file_type(self, 0); // 0 = BigWig
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1579,84 +1476,53 @@ bw_is_bigwig_q(VALUE self)
       <div class="method_details ">
   <h3 class="signature " id="sql-instance_method">
   
-    #<strong>sql</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>sql</strong>  &#x21d2; <tt>String</tt><sup>?</sup> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get SQL schema (BigBed files only)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SQL schema string, or nil if not available</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-656
-657
-658
-659
-660
-661
-662
-663
-664
-665
-666
-667
-668
-669
-670
-671
-672
-673
-674
-675
-676
-677
-678
-679
-680
-681
-682
-683
-684
-685
-686</pre>
+</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'ext/bio/bigwig/bigwigext.c', line 656</span>
+      <pre class="code"><span class="info file"># File 'lib/bio/bigwig.rb', line 129</span>
 
-static VALUE
-bb_get_sql(VALUE self)
-{
-  bigWigFile_t *bw = get_bigWigFile(self);
-  VALUE ret;
-  char *str;
-
-  if (!bw)
-  {
-    rb_raise(rb_eIOError, &quot;The bigBed file handle is not opened!&quot;);
-    return Qnil;
-  }
-
-  if (bw-&gt;type == 0)
-  {
-    rb_raise(rb_eRuntimeError, &quot;bigWig files have no entries!&quot;);
-    return Qnil;
-  }
-
-  str = bbGetSQL(bw);
-  if (!str)
-  {
-    return Qnil;
-  }
-
-  ret = rb_str_new2(str);
-  if (str)
-    free(str);
-
-  return ret;
-}</pre>
+</pre>
     </td>
   </tr>
 </table>
@@ -1947,7 +1813,7 @@ bb_get_sql(VALUE self)
 </div>
 
       <div id="footer">
-  Generated on Tue Jul 22 15:06:39 2025 by
+  Generated on Tue Jul 22 15:15:33 2025 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.37 (ruby-3.4.5).
 </div>
