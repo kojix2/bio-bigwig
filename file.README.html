@@ -6,13 +6,13 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.37
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css">
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css">
 
 <script type="text/javascript">
   pathId = "README";
@@ -27,6 +27,8 @@
 
   </head>
   <body>
+    <div id="main_progress" aria-hidden="true"></div>
+
     <div class="nav_wrap">
       <iframe id="nav" src="file_list.html?1"></iframe>
       <div id="resizer"></div>
@@ -57,27 +59,22 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'>
-<h1 id="label-bio-bigwig">bio-bigwig</h1>
-
-<p><a href="https://rubygems.org/gems/bio-bigwig"><img src="https://img.shields.io/gem/v/bio-bigwig?color=brightgreen" alt="Gem Version"></a> <a href="https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml"><img src="https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml/badge.svg" alt="test"></a> <a href="https://rubydoc.info/gems/bio-bigwig"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs Latest"></a> <a href="https://tokei.kojix2.net/github/kojix2/bio-bigwig"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fbio-bigwig%2Flines" alt="Lines of Code"></a> <a href="https://doi.org/10.5281/zenodo.13860901"><img src="https://zenodo.org/badge/438516085.svg" alt="DOI"></a></p>
-
+      <div id="content"><div id='filecontents'><h1 id="bio_bigwig">bio-bigwig</h1>
+<p><a href="https://rubygems.org/gems/bio-bigwig"><img src="https://img.shields.io/gem/v/bio-bigwig?color=brightgreen" alt="Gem Version" /></a>
+<a href="https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml"><img src="https://github.com/kojix2/bio-bigwig/actions/workflows/ci.yml/badge.svg" alt="test" /></a>
+<a href="https://rubydoc.info/gems/bio-bigwig"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs Latest" /></a>
+<a href="https://tokei.kojix2.net/github/kojix2/bio-bigwig"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Ftokei.kojix2.net%2Fbadge%2Fgithub%2Fkojix2%2Fbio-bigwig%2Flines" alt="Lines of Code" /></a>
+<a href="https://doi.org/10.5281/zenodo.13860901"><img src="https://zenodo.org/badge/438516085.svg" alt="DOI" /></a></p>
 <p>Ruby wrapper to <a href="https://github.com/dpryan79/libBigWig">libBigWig</a> compatible with <a href="https://github.com/deeptools/pyBigWig">pyBigWig</a>.</p>
-<ul><li>
-<p>Supports both local and remote file access via HTTP/HTTPS.</p>
-</li><li>
-<p>File writing is not implemented.</p>
-</li></ul>
-
-<h2 id="label-Installation">Installation</h2>
-
+<ul>
+<li>Supports both local and remote file access via HTTP/HTTPS.</li>
+<li>File writing is not implemented.</li>
+</ul>
+<h2 id="Installation">Installation</h2>
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='id identifier rubyid_install'>install</span> <span class='id identifier rubyid_bio'>bio</span><span class='op'>-</span><span class='id identifier rubyid_bigwig'>bigwig</span>
 </code></pre>
-
-<h2 id="label-Usage">Usage</h2>
-
+<h2 id="Usage">Usage</h2>
 <p><a href="https://genome.ucsc.edu/goldenPath/help/bigWig.html">bigWig Track Format</a></p>
-
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bio/bigwig</span><span class='tstring_end'>&quot;</span></span>
 
 <span class='id identifier rubyid_bw'>bw</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Bio.html" title="Bio (module)">Bio</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Bio/BigWig.html" title="Bio::BigWig (class)">BigWig</a></span></span><span class='period'>.</span><span class='id identifier rubyid_open'><span class='object_link'><a href="Bio/BigWig.html#open-class_method" title="Bio::BigWig.open (method)">open</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test/fixtures/test.bw</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -134,9 +131,7 @@
 <span class='comment'># [[0, 1, 0.10000000149011612], [1, 2, 0.20000000298023224], [2, 3, 0.30000001192092896],
 </span><span class='comment'># [100, 150, 1.399999976158142], [150, 151, 1.5]]
 </span></code></pre>
-
 <p><a href="https://genome.ucsc.edu/goldenPath/help/bigBed.html">bigBed Track Format</a></p>
-
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>bio/bigwig</span><span class='tstring_end'>&quot;</span></span>
 
 <span class='id identifier rubyid_bb'>bb</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Bio.html" title="Bio (module)">Bio</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Bio/BigWig.html" title="Bio::BigWig (class)">BigWig</a></span></span><span class='period'>.</span><span class='id identifier rubyid_open'><span class='object_link'><a href="Bio/BigWig.html#open-class_method" title="Bio::BigWig.open (method)">open</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>test/fixtures/test.bigBed</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -167,29 +162,21 @@
 </span><span class='comment'>#     uint score2;       &quot;Additional measurement/count e.g. number of reads. Set to 0 for no data.&quot;
 </span><span class='comment'>#     )
 </span></code></pre>
-
-<h2 id="label-Contributing">Contributing</h2>
-
-<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/kojix2/bio-bigwig">github.com/kojix2/bio-bigwig</a>.</p>
-
-<h2 id="label-Development">Development</h2>
-
+<h2 id="Contributing">Contributing</h2>
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/kojix2/bio-bigwig">https://github.com/kojix2/bio-bigwig</a>.</p>
+<h2 id="Development">Development</h2>
 <p>Pull requests are welcome!</p>
-
 <pre class="code ruby"><code class="ruby">Do you need commit rights to my repository?
 Do you want to get admin rights and take over the project?
 If so, please feel free to contact us @kojix2.
 </code></pre>
-
-<h2 id="label-License">License</h2>
-
-<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
-</div></div>
+<h2 id="License">License</h2>
+<p>The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p></div></div>
 
       <div id="footer">
-  Generated on Mon Nov 24 09:46:37 2025 by
+  Generated on Mon Jun 22 08:58:07 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.37 (ruby-3.4.7).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>
