@@ -2,6 +2,11 @@
 
 require_relative "lib/bio/bigwig/version"
 
+libbigwig_header = File.expand_path("ext/bio/bigwig/libBigWig/bigWig.h", __dir__)
+unless File.file?(libbigwig_header)
+  raise "libBigWig is missing; run `git submodule update --init --recursive`"
+end
+
 Gem::Specification.new do |spec|
   spec.name          = "bio-bigwig"
   spec.version       = Bio::BigWig::VERSION
