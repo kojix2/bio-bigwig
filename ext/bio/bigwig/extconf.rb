@@ -2,6 +2,7 @@ require "mkmf"
 
 # check curl
 have_library("curl", "curl_easy_init")
+have_library("z", "uncompress", "zlib.h")
 have_header("libbigwig/bigWig.h")
 
 $srcs = Dir.glob("libBigWig/*.c", base: __dir__)
