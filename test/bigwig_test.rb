@@ -176,6 +176,28 @@ class BigWigTest < Minitest::Test
     bb.close
   end
 
+  def test_region_coordinates_use_unsigned_32_bit_range
+    high = 1 << 31
+    max = (1 << 32) - 1
+    Bio::BigWig.open(bwfile) do |bw|
+      [
+        -> { bw.intervals("1", high, high + 1) },
+        -> { bw.values("1", high, high + 1) },
+        -> { bw.stats("1", high, high + 1) },
+        -> { bw.intervals("1", 0, max) }
+      ].each { |query| assert_raises(RuntimeError, &query) }
+
+      assert_raises(RangeError) { bw.intervals("1", 0, max + 1) }
+      assert_equal bw.intervals("1", 0, -1), bw.intervals("1")
+    end
+
+    Bio::BigWig.open(bbfile) do |bb|
+      assert_raises(RuntimeError) { bb.entries("chr1", high, high + 1) }
+      assert_raises(RuntimeError) { bb.entries("chr1", 0, max) }
+      assert_raises(RangeError) { bb.entries("chr1", 0, max + 1) }
+    end
+  end
+
   def test_bb_sql
     expected = <<~SQL
       table RnaElements#{" "}

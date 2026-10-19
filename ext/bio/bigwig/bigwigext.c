@@ -81,6 +81,29 @@ static bigWigFile_t *get_bigWigFile(VALUE obj)
   return data;
 }
 
+static uint32_t
+coordinate_arg(VALUE value)
+{
+  long long coordinate = NUM2LL(value);
+  if (coordinate < 0 || coordinate > UINT32_MAX)
+    rb_raise(rb_eRangeError, "coordinate must be in 0..4294967295");
+  return (uint32_t)coordinate;
+}
+
+static void
+parse_region(bigWigFile_t *bw, uint32_t tid, VALUE rb_start, VALUE rb_end,
+             uint32_t *start, uint32_t *end)
+{
+  if (tid == UINT32_MAX)
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+
+  *start = NIL_P(rb_start) ? 0 : coordinate_arg(rb_start);
+  *end = NIL_P(rb_end) || rb_end == INT2FIX(-1) ? bw->cl->len[tid] : coordinate_arg(rb_end);
+
+  if (*end <= *start || *end > bw->cl->len[tid])
+    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
+}
+
 static VALUE
 bigwig_allocate(VALUE klass)
 {
@@ -287,8 +310,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
 {
   bigWigFile_t *bw = get_bigWigFile(self);
   double *val;
-  unsigned long startl = 0, endl = -1;
-  uint32_t start, end = -1, tid;
+  uint32_t start, end, tid;
   int nBins = 1, i;
   char *chrom = NULL;
   const char *type = "mean";
@@ -317,12 +339,6 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
     chrom = StringValueCStr(rb_chrom);
   }
 
-  if (rb_start != Qnil)
-    startl = NUM2LONG(rb_start);
-
-  if (rb_end != Qnil)
-    endl = NUM2LONG(rb_end);
-
   if (rb_nBins != Qnil)
     nBins = NUM2INT(rb_nBins);
 
@@ -330,24 +346,7 @@ bw_get_stats(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_
     type = StringValueCStr(rb_type);
 
   tid = bwGetTid(bw, chrom);
-
-  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
-    endl = bw->cl->len[tid];
-
-  if (tid == (uint32_t)-1 || startl > end || endl > end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
-
-  start = (uint32_t)startl;
-  end = (uint32_t)endl;
-
-  if (end <= start || end > bw->cl->len[tid] || start >= end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
+  parse_region(bw, tid, rb_start, rb_end, &start, &end);
 
   if (char2enum(type) == doesNotExist)
   {
@@ -395,8 +394,7 @@ bw_get_values(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
   int i;
-  uint32_t start, end = -1, tid;
-  unsigned long startl = 0, endl = -1;
+  uint32_t start, end, tid;
   char *chrom = NULL;
   VALUE ret;
   bwOverlappingIntervals_t *o;
@@ -418,30 +416,8 @@ bw_get_values(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
     chrom = StringValueCStr(rb_chrom);
   }
 
-  if (rb_start != Qnil)
-    startl = NUM2LONG(rb_start);
-
-  if (rb_end != Qnil)
-    endl = NUM2LONG(rb_end);
-
   tid = bwGetTid(bw, chrom);
-
-  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
-    endl = bw->cl->len[tid];
-  if (tid == (uint32_t)-1 || startl > end || endl > end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
-
-  start = (uint32_t)startl;
-  end = (uint32_t)endl;
-
-  if (end <= start || end > bw->cl->len[tid] || start >= end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
+  parse_region(bw, tid, rb_start, rb_end, &start, &end);
 
   if (!hasEntries(bw))
   {
@@ -467,8 +443,7 @@ static VALUE
 bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
-  uint32_t start, end = -1, tid, i;
-  unsigned long startl = 0, endl = -1;
+  uint32_t start, end, tid, i;
   bwOverlappingIntervals_t *intervals = NULL;
   char *chrom = NULL;
   VALUE ret;
@@ -496,32 +471,8 @@ bw_get_intervals(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end)
     chrom = StringValueCStr(rb_chrom);
   }
 
-  if (rb_start != Qnil)
-    startl = NUM2LONG(rb_start);
-
-  if (rb_end != Qnil)
-    endl = NUM2LONG(rb_end);
-
   tid = bwGetTid(bw, chrom);
-
-  // Sanity check
-  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
-    endl = bw->cl->len[tid];
-
-  if (tid == (uint32_t)-1 || startl > end || endl > end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
-
-  start = (uint32_t)startl;
-  end = (uint32_t)endl;
-
-  if (end <= start || end > bw->cl->len[tid] || start >= end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
+  parse_region(bw, tid, rb_start, rb_end, &start, &end);
 
   if (!hasEntries(bw))
   {
@@ -555,8 +506,7 @@ static VALUE
 bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE rb_with_string)
 {
   bigWigFile_t *bw = get_bigWigFile(self);
-  uint32_t start, end = -1, tid, i;
-  unsigned long startl = 0, endl = -1;
+  uint32_t start, end, tid, i;
   char *chrom = NULL;
   VALUE ret, t;
   int withString = 1;
@@ -579,12 +529,6 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
     chrom = StringValueCStr(rb_chrom);
   }
 
-  if (rb_start != Qnil)
-    startl = NUM2LONG(rb_start);
-
-  if (rb_end != Qnil)
-    endl = NUM2LONG(rb_end);
-
   if (rb_with_string != Qnil)
   {
     if (RTEST(rb_with_string))
@@ -594,24 +538,7 @@ bb_get_entries(VALUE self, VALUE rb_chrom, VALUE rb_start, VALUE rb_end, VALUE r
   }
 
   tid = bwGetTid(bw, chrom);
-
-  // Sanity check
-  if (endl == (unsigned long)-1 && tid != (uint32_t)-1)
-    endl = bw->cl->len[tid];
-  if (tid == (uint32_t)-1 || startl > end || endl > end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
-
-  start = (uint32_t)startl;
-  end = (uint32_t)endl;
-
-  if (end <= start || end > bw->cl->len[tid] || start >= end)
-  {
-    rb_raise(rb_eRuntimeError, "Invalid interval bounds!");
-    return Qnil;
-  }
+  parse_region(bw, tid, rb_start, rb_end, &start, &end);
 
   o = bbGetOverlappingEntries(bw, chrom, start, end, withString);
   if (!o)
